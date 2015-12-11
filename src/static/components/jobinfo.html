@@ -1,0 +1,39 @@
+<uib-accordion close-others="oneAtATime">
+    <uib-accordion-group is-open="status.open">
+        <uib-accordion-heading>
+            <h4>Jobs<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i></h4>
+        </uib-accordion-heading>
+        <div ng-repeat="(node,jobs) in jobs" class="container-fluid">
+            <h4> {{node}} </h4>
+            <div ng-repeat="(jobId, job) in jobs" class="panel panel-{{getProgressType(job.details.status)}}">
+                <div class="panel-heading">
+                    <p>
+                    <button ng-show="job.details.status=='running'" class="btn btn-danger pull-right"><i class="glyphicon glyphicon-alert"></i> Stop</button>
+                    <button ng-show="job.details.status=='finished'" class="btn btn-success pull-right"><i class="glyphicon glyphicon-ok"></i> Close</button>
+                    <h5><strong>Job: </strong>{{jobId}}</h5></p>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <strong>Source disk: </strong>{{job.source}}<br/>
+                        <strong>Status: </strong>{{job.details.status}}<br/>
+                        <strong>Start time: </strong>{{job.details.start_time}}<br/>
+                        <strong>End time: </strong>{{job.details.end_time}}<br/>
+                    </div>
+                    <div class="col-md-8">
+                        <div ng-repeat="key in job.details.partitions">
+                            <div class="col-md-3">
+                                <span class="align-right"><strong>Partition:</strong> {{key.name}}</span>
+                            </div>
+                            <div class="col-md-9">
+                                <uib-progressbar max="100" value="key.completed" type="{{getProgressType(key.status)}}">{{key.status}}</uib-progressbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <button class="btn pull-right" ng-click="update()" ng-disabled="loading">
+            <span ng-if="loading" class="glyphicon glyphicon-refresh"></span> Refresh</button>
+    </uib-accordion-group>
+</uib-accordion>

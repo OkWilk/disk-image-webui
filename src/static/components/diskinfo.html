@@ -1,0 +1,32 @@
+<uib-accordion>
+    <uib-accordion-group is-open="status.open">
+        <uib-accordion-heading>
+            <h4>Disks<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i></h4>
+        </uib-accordion-heading>
+        <div class="container-fluid">
+            <div class="row" ng-repeat="(node, disks) in disks">
+                <h4>{{node}}</h4>
+                <div class="row" ng-repeat="(disk,details) in disks">
+                    <div class="col-xs-2 col-md-1">
+                        <h4 class="pull-right">{{disk}}</h4>
+                    </div>
+                    <div class="col-xs-7 col-md-10">
+                        <div class="progress" style="height:34px">
+                            <div class="progress-bar text-center" ng-repeat="partition in details.partitions" role="progressbar" style="
+                                     width:{{getPercentage(partition.size,details.size)}};
+                                     border-width:0px 1px 0px 1px;
+                                     border-style:solid;
+                                     border-color:light-grey" uib-popover="{{partitionInfo(partition)}}" popover-title='{{partition.name}}' popover-trigger="mouseenter" popover-placement="bottom" popover-append-to-body="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-1">
+                        <button class="btn btn-primary" ng-click="backup(node, disk)">Backup</button>
+                    </div>
+                </div>
+            </div>
+        <button class="btn pull-right" ng-click="update()" ng-disabled="status.loading">
+            <span ng-if="status.loading" class="glyphicon glyphicon-refresh"></span> Refresh</button>
+        </div>
+    </uib-accordion-group>
+</uib-accordion>
