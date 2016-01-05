@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block head %}
+    <script src="../static/diskInfoCtrl.js" type="text/javascript"></script>
+    <script src="../static/jobInfoCtrl.js" type="text/javascript"></script>
+{% endblock %}
+{% block body %}
+    {% raw %}
+    <div class="container">
+        <div class="col-md-8">
+            <div ng-controller="JobInfoCtrl" ng-include="'static/components/jobinfo.html'"></div>
+        </div>
+        <div class="col-md-4">
+            <div ng-controller="DiskInfoCtrl" ng-include="'static/components/diskinfo.html'"></div>
+        </div>
+    </div>
+    {% endraw %}
+
+{% endblock %}

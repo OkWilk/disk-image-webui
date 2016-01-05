@@ -1,6 +1,6 @@
 AppModule.controller("DiskInfoCtrl", ['$scope', '$http', '$interval', '$log', function($scope, $http, $interval, $log) {
     $scope.getDiskInfo = function() {
-        $http.get('api/disk').
+        $http.get('/api/disk').
         success(function(data, status, headers, config) {
             $scope.disks = data;
             $scope.status.loading = false;
@@ -12,13 +12,13 @@ AppModule.controller("DiskInfoCtrl", ['$scope', '$http', '$interval', '$log', fu
     }
     $scope.backup = function(node, disk) {
         body = {
-            "node": node,
-            "job_id": disk,
-            "source": disk,
+            "operation": "Backup",
+            "job_id": disk.name,
+            "disk": disk.name,
             "overwrite": true,
-            "compress": true
+            "compress": false
         }
-        $http.post('/job/backup', body).
+        $http.post('/api/' + node + '/job', body).
         success(function(data, status, headers, config) {
 
         }).

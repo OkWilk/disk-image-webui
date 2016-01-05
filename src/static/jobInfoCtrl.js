@@ -2,7 +2,7 @@ AppModule.controller("JobInfoCtrl", ['$scope', '$http', '$interval', '$log',
     function($scope, $http, $interval, $log) {
         $scope.update = function() {
             $scope.loading = true;
-            $http.get('/job/backup').then(
+            $http.get('/api/job').then(
                 function(response) {
                     $scope.jobs = response.data;
                     $scope.loading = false;
@@ -24,6 +24,18 @@ AppModule.controller("JobInfoCtrl", ['$scope', '$http', '$interval', '$log',
                 default:
                     return 'warning';
             }
+        };
+
+        $scope.finishJob = function(node, jobId) {
+            $http.delete('/api/' + node + '/job/' + jobId).then(
+                function(response) {
+                    $scope.jobs.pop(jobId);
+                    $scope.update()
+                },
+                function(reason) {
+                    $scope.error = "Could not finish job.";
+                }
+            );
         };
 
         var intervalUpdate = function() {

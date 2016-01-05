@@ -1,0 +1,33 @@
+.no-padding {
+    padding: 0;
+}
+.no-margin {
+    margin: 0;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+
+/* modal styles */
+.modal-content {
+    padding: 15px;
+}
+
+.clickable-addon:hover {
+    cursor: pointer;
+}
+.clickable-addon:active {
+    cursor: pointer;
+}
+div.label {
+  position: relative;
+  display: inline-block;
+}

@@ -13,13 +13,28 @@
     {% block head %} {% endblock %}
 </head>
 
-<body>
+<body ng-app="com.itcarlow.okwilk.diskimage">
     <div class="container">
         <nav class="navbar">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/">
-                        <span class="glyphicon glyphicon-home"></span>
+                    <a href="/dashboard">
+                        <i class="glyphicon glyphicon-dashboard"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/backups">
+                        <i class="glyphicon glyphicon-hdd"></i> Backups
+                    </a>
+                </li>
+                <li>
+                    <a href="/nodes">
+                        <i class="glyphicon glyphicon-briefcase"></i> Nodes
+                    </a>
+                </li>
+                <li>
+                    <a href="/nodes">
+                        <i class="glyphicon glyphicon-cog"></i> Configuration
                     </a>
                 </li>
             </ul>
@@ -38,22 +53,21 @@
             </ul>
         </nav>
     </div>
-        <div class="container">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category,message in messages %}
-                        <div class="alert alert-{{ category }} fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {% if 'danger' in category %}
-                            <strong class="text-capitalize">Error:</strong> {{ message }} {% else %}
-                            <strong class="text-capitalize">{{ category }}:</strong> {{ message }} {% endif %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
-        <div class="container-fluid">
-            {% block body %} {% endblock %}
-        </div>
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{ category }} fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {% if 'danger' in category %}
+                        <strong class="text-capitalize">Error:</strong> {{ message }} {% else %}
+                        <strong class="text-capitalize">{{ category }}:</strong> {{ message }} {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="container-fluid">
+        {% block body %} {% endblock %}
     </div>
 </body>
 
