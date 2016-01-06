@@ -1,36 +1,40 @@
-<uib-accordion>
-    <uib-accordion-group is-open="status.open">
-        <uib-accordion-heading>
-            <h4>Disks<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i></h4>
-        </uib-accordion-heading>
-        <div class="container-fluid">
-            <div class="row" ng-repeat="(node, disks) in disks">
-                <h4>{{node}}</h4>
-                <div ng-repeat="disk in disks">
-                    <div class="row">
-                        <div class="col-xs-2 col-md-2 text-center">
-                            <h4 class="no-padding no-margin">
-                                <span class="label label-default">{{disk.name}}</span>
-                            </h4>
-                        </div>
-                        <div class="col-xs-8 col-md-8 text-center">
-                            <div class="progress">
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="inline-title">Disks</h4>
+        <div class="pull-right">
+            <button class="btn btn-default" ng-click="update()" ng-disabled="status.loading">
+                <i ng-if="status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-condenset table-hover" ng-repeat="(node, disks) in disks">
+                <thead>
+                    <tr>
+                        <th colspan="3">{{node}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="disk in disks">
+                        <td class="fit">
+                            <span class="label label-default" style="padding:5px" uib-popover="<strong>Size:</strong> {{humanSize(disk.size)}}" popover-title='<strong>Disk:</strong> {{disk.name}}' popover-trigger="mouseenter">{{disk.name}}</span>
+                        </td>
+                        <td>
+                            <div class="progress no-margin">
                                 <div class="progress-bar text-center" ng-repeat="partition in disk.partitions" role="progressbar" style="
-                                     width:{{getPercentage(partition.size,disk.size)}};
-                                     border-width:0px 1px 0px 1px;
-                                     border-style:solid;
-                                     border-color:light-grey" uib-popover="{{partitionInfo(partition)}}" popover-title='{{partition.name}}' popover-trigger="mouseenter" popover-placement="bottom" popover-append-to-body="true">
+                                             width:{{getPercentage(partition.size,disk.size)}};
+                                             border-width:0px 1px 0px 1px;
+                                             border-style:solid;
+                                             border-color:light-grey" uib-popover="{{partitionInfo(partition)}}" popover-title='<strong>Partition:</strong> {{partition.name}}' popover-trigger="mouseenter" popover-append-to-body="true">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xs-2 col-md-2 text-center">
-                            <button class="btn btn-xs btn-primary" ng-click="backup(node, disk)">Backup</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn pull-right" ng-click="update()" ng-disabled="status.loading">
-                <span ng-if="status.loading" class="glyphicon glyphicon-refresh"></span> Refresh</button>
+                        </td>
+                        <td class="fit">
+                            <button class="btn btn-primary btn-xs" ng-click="backup(node, disk)">Backup</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </uib-accordion-group>
-</uib-accordion>
+    </div>
+</div>

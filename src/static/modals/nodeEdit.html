@@ -1,5 +1,5 @@
     <div class="modal-header">
-        <h3>{{title}}</h3>
+        <h3 class="inline-title">{{title}}</h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" role="form">
@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-3" for="ignored">Ignored disks:</label>
                 <div class="col-sm-9">
-                    <div ng-repeat="disk in node.ignored_disks" class="label label-default clickable-addon" ng-click="removeIgnoredDisk(disk)">{{disk}} <i class="glyphicon glyphicon-remove"></i></div>
+                    <div ng-repeat="disk in node.ignored_disks" class="label label-default stackable-label clickable-addon" ng-click="removeIgnoredDisk(disk)">{{disk}} <i class="glyphicon glyphicon-remove"></i></div>
                     <div class="input-group">
                         <input type="text" class="form-control" id="ignored" placeholder="sda" ng-model="ignored">
                         <div class="input-group-addon clickable-addon" ng-click="addIgnoredDisk()">Add</div>

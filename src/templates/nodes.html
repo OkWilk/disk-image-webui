@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block head %}
-<script src="/static/nodesListCtrl.js"></script>
-<script src="/static/nodeModalCtrl.js"></script>
+<script src="/static/controllers/nodesListCtrl.js"></script>
+<script src="/static/controllers/nodeModalCtrl.js"></script>
 {% endblock %} {% block body %} {% raw %}
 <div class="container" ng-controller="NodesListCtrl">
     <div class="row">
@@ -32,7 +32,7 @@
                         <td>{{node.address}}</td>
                         <td>{{node.port}}</td>
                         <td>
-                            <div class="label label-default" ng-repeat="disk in node.ignored_disks">{{ disk }}</div>
+                            <div class="label label-default stackable-label" ng-repeat="disk in node.ignored_disks">{{ disk }}</div>
                         </td>
                         <td class="fit">
                             <button class="btn btn-primary" ng-click="edit(node)">Edit</button>

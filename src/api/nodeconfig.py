@@ -17,7 +17,7 @@ class _NodeConfig(Observer):
         self.nodes = to_list(data)
 
     def get_node(self, node_id):
-        for node in nodes:
+        for node in self.nodes:
             if node['name'] == node_id:
                 return node
         raise ValueError("Invalid node specified.")

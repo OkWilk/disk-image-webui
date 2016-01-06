@@ -14,44 +14,46 @@
 </head>
 
 <body ng-app="com.itcarlow.okwilk.diskimage">
-    <div class="container">
-        <nav class="navbar">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="/dashboard">
-                        <i class="glyphicon glyphicon-dashboard"></i> Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="/backups">
-                        <i class="glyphicon glyphicon-hdd"></i> Backups
-                    </a>
-                </li>
-                <li>
-                    <a href="/nodes">
-                        <i class="glyphicon glyphicon-briefcase"></i> Nodes
-                    </a>
-                </li>
-                <li>
-                    <a href="/nodes">
-                        <i class="glyphicon glyphicon-cog"></i> Configuration
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if session.user_type %}
-                <li>
-                    <a href="/logout">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/login">
-                        <span class="glyphicon glyphicon-log-in"></span> Login</a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
+    <div class="container-fluid">
+        <div class="col-xs-12">
+            <nav class="navbar">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/dashboard">
+                            <i class="glyphicon glyphicon-dashboard"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/backups">
+                            <i class="glyphicon glyphicon-hdd"></i> Backups
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/nodes">
+                            <i class="glyphicon glyphicon-briefcase"></i> Nodes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/config">
+                            <i class="glyphicon glyphicon-cog"></i> Configuration
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+                    {% if session.user_type %}
+                    <li>
+                        <a href="/logout">
+                            <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="/login">
+                            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
     <div class="container-fluid">
         {% with messages = get_flashed_messages(with_categories=true) %}

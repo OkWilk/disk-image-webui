@@ -18,10 +18,6 @@ class Job(Resource):
                     pass
         return jobs
 
-
-class JobAdd(Resource):
-    RESOURCE_ADDRESS = '/api/job'
-
     def post(self, node_id):
         try:
             node = NodeConfig.get_node(node_id)
@@ -30,9 +26,6 @@ class JobAdd(Resource):
             return r.text, r.status_code
         except:
             abort(404, message="Invalid resource requested.")
-
-class JobRemove(Resource):
-    RESOURCE_ADDRESS = '/api/job'
 
     def delete(self, node_id, job_id):
         try:

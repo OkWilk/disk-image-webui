@@ -1,33 +1,52 @@
-.no-padding {
-    padding: 0;
-}
-.no-margin {
-    margin: 0;
+/* Global Bootsrap Overrides */
+div[class^="col"] { /* Reduce gutter between columns */
+    padding-left:5px;
+    padding-right:5px;
 }
 
+
+/* Classes for General use */
+.inline-title {
+    display:inline-block;
+    margin: 0.4em;
+}
+.stackable-label {
+    margin: 0 1px;
+    position: relative;
+    display: inline-block;
+}
+.no-padding {
+    padding: 0 !important;
+}
+.no-margin {
+    margin: 0 !important;
+}
+
+
+/* Table styles */
 .table > tbody > tr > td {
      vertical-align: middle;
 }
-
-.table td.fit,
-.table th.fit {
+.table td.fit, .table th.fit {
     white-space: nowrap;
     width: 1%;
 }
 
 
-/* modal styles */
+/* Modal styles */
+.modal-header {
+    padding: 0 0 0.5em 0;
+}
 .modal-content {
     padding: 15px;
 }
-
+.inline-checkbox-label {
+    display: inline-block;
+    padding: 0.25em 1em;
+}
 .clickable-addon:hover {
     cursor: pointer;
 }
 .clickable-addon:active {
     cursor: pointer;
-}
-div.label {
-  position: relative;
-  display: inline-block;
 }

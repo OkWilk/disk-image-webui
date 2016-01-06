@@ -40,6 +40,7 @@ class Node(Resource, Observable):
         with MongoConnector(constants.DB_CONFIG) as db:
             result = db.nodes.remove({'name': node_id})
         if result['n']:
+            self.update_observers()
             return 'OK', 200
         else:
             return 'Requested node does not exist.', 404
