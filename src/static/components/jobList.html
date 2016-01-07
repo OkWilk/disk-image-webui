@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="inline-title">Jobs</h4>
+        Jobs
         <div class="pull-right">
-            <button class="btn btn-default" ng-click="update()" ng-disabled="status.loading">
+            <button class="btn btn-default btn-xs" ng-click="update()" ng-disabled="status.loading">
                 <i ng-if="status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
         </div>
     </div>
@@ -21,8 +21,9 @@
                             <uib-progressbar class="no-padding no-margin" animate="true" max="100" value="getProgressValue(job)" type="{{getProgressType(job.status)}}">{{getProgressValue(job)}}%</uib-progressbar>
                         </td>
                         <td class="fit">
-                            <button style:"z-index: 5;" ng-show="job.status=='running'" class="btn btn-danger" ng-click="finishJob(node, job.id)"><i class="glyphicon glyphicon-alert"></i> Stop</button>
-                            <button style:"z-index: 5;" ng-show="job.status=='finished'" class="btn btn-success" ng-click="finishJob(node, job.id)"><i class="glyphicon glyphicon-ok"></i> Close</button>
+                            <button ng-show="job.status=='running'" class="btn btn-warning btn-xs" ng-click="finishJob(node, job.id)"><i class="glyphicon glyphicon-alert"></i> Stop</button>
+                            <button ng-show="job.status=='finished'" class="btn btn-success btn-xs" ng-click="finishJob(node, job.id)"><i class="glyphicon glyphicon-ok"></i> Close</button>
+                            <button ng-show="job.status=='error'" class="btn btn-danger btn-xs" ng-click="finishJob(node, job.id)"><i class="glyphicon glyphicon-remove"></i> Close</button>
                         </td>
                     </tr>
                 </tbody>

@@ -1,47 +1,6 @@
 {% extends "base.html" %} {% block head %}
-<script src="/static/nodesListCtrl.js"></script>
-<script src="/static/nodeModalCtrl.js"></script>
 {% endblock %} {% block body %} {% raw %}
-<div class="container" ng-controller="NodesListCtrl">
-    <div class="row">
-        <div class="col-sm-12">
-            <button class="btn btn-success pull-right" ng-click="addNode()"><i class="glyphicon glyphicon-plus"></i> Add node</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th class="fit"></th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Port</th>
-                        <th>Ignored Disks</th>
-                        <th class="fit">Controlls</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="node in nodes">
-                        <td class="fit">
-                            <span ng-show="node.enabled" class="label label-success">enabled</span>
-                            <span ng-show="!node.enabled" class="label label-danger">disabled</span>
-                            <!-- <span class="label label-warning">not responding</span> -->
-                        </td>
-                        <td>{{node.name}}</td>
-                        <td>{{node.address}}</td>
-                        <td>{{node.port}}</td>
-                        <td>
-                            <div class="label label-default stackable-label" ng-repeat="disk in node.ignored_disks">{{ disk }}</div>
-                        </td>
-                        <td class="fit">
-                            <button class="btn btn-primary" ng-click="edit(node)">Edit</button>
-                            <button class="btn btn-danger" ng-click="delete(node)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="container">
+    Placeholder
 </div>
 {% endraw %} {% endblock %}

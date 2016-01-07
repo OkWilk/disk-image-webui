@@ -1,11 +1,20 @@
 /* Global Bootsrap Overrides */
 nav {
-    margin-bottom: 0.5em !important;
+    margin-bottom: 0 !important;
 }
 div[class^="col"] { /* Reduce gutter between columns */
-    padding-left:5px;
-    padding-right:5px;
+    padding:5px;
 }
+.panel {
+    margin: 0;
+}
+.panel > .panel-heading {
+    font-weight: bold;
+}
+.panel > .panel-body {
+    padding: 5px;
+}
+
 
 /* Classes for General use */
 .button-bar {
@@ -27,7 +36,6 @@ div[class^="col"] { /* Reduce gutter between columns */
     margin: 0 !important;
 }
 
-
 /* Table styles */
 .table > tbody > tr > td {
      vertical-align: middle;
@@ -43,7 +51,7 @@ div[class^="col"] { /* Reduce gutter between columns */
     padding: 0 0 0.5em 0;
 }
 .modal-content {
-    padding: 15px;
+    padding: 15px 15px 0 15px;
 }
 .inline-checkbox-label {
     display: inline-block;
@@ -54,4 +62,10 @@ div[class^="col"] { /* Reduce gutter between columns */
 }
 .clickable-addon:active {
     cursor: pointer;
+}
+
+
+/* Chart.js overrides */
+.line-legend {
+    margin: -1em 0 0 0;
 }
