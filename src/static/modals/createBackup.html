@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h3 class="inline-title">{{title}}</h3>
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="name">Job name:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="name" placeholder="Enter name" ng-model="backup.job_id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="disk">Source Disk:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="disk" value="{{disk.name}} @ {{node}}"  disabled="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label class="inline-checkbox-label" for="enabled">
+                        <input type="checkbox" id="enabled" ng-model="backup.compress">Compress</label>
+                    <label class="inline-checkbox-label" for="overwrite">
+                        <input type="checkbox" id="overwrite" ng-model="backup.overwrite">Overwrite</label>
+                    <label class="inline-checkbox-label" for="rescue">
+                        <input type="checkbox" id="rescue" ng-model="backup.rescue">Rescue</label>
+                    <label class="inline-checkbox-label" for="force">
+                        <input type="checkbox" id="force" ng-model="backup.force">Force</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label class="inline-checkbox-label" for="space_check">
+                        <input type="checkbox" id="space_check" ng-model="backup.space_check">Space check</label>
+                    <label class="inline-checkbox-label" for="fs_check">
+                        <input type="checkbox" id="fs_check" ng-model="backup.fs_check">Filesystem check</label>
+                    <label class="inline-checkbox-label" for="crc_check">
+                        <input type="checkbox" id="crc_check" ng-model="backup.crc_check">Integrity check</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-right">
+                <button type="submit" class="btn btn-primary" ng-click="ok()">Run</button>
+                <button type="submit" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,11 +1,16 @@
 /* Global Bootsrap Overrides */
+nav {
+    margin-bottom: 0.5em !important;
+}
 div[class^="col"] { /* Reduce gutter between columns */
     padding-left:5px;
     padding-right:5px;
 }
 
-
 /* Classes for General use */
+.button-bar {
+    margin: 0.5em 0;
+}
 .inline-title {
     display:inline-block;
     margin: 0.4em;

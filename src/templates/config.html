@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% block head %}
-<script src="/static/controllers/nodesListCtrl.js"></script>
-<script src="/static/controllers/nodeModalCtrl.js"></script>
+<script src="/static/nodesListCtrl.js"></script>
+<script src="/static/nodeModalCtrl.js"></script>
 {% endblock %} {% block body %} {% raw %}
 <div class="container" ng-controller="NodesListCtrl">
     <div class="row">
-        <div class="col-sm-12 button-bar">
+        <div class="col-sm-12">
             <button class="btn btn-success pull-right" ng-click="addNode()"><i class="glyphicon glyphicon-plus"></i> Add node</button>
         </div>
     </div>

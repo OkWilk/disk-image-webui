@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% block head %}
-    <script src="../static/controllers/diskInfoCtrl.js" type="text/javascript"></script>
-    <script src="../static/controllers/jobInfoCtrl.js" type="text/javascript"></script>
+    <script src="../static/controllers/diskListCtrl.js" type="text/javascript"></script>
+    <script src="../static/controllers/jobListCtrl.js" type="text/javascript"></script>
     <script src="../static/controllers/createBackupModalCtrl.js" type="text/javascript"></script>
+    <script src="../static/controllers/jobDetailsModalCtrl.js" type="text/javascript"></script>
 {% endblock %}
 {% block body %}
     {% raw %}
-        <div class="col-md-8">
-            <div ng-controller="JobInfoCtrl" ng-include="'static/components/jobinfo.html'"></div>
+    <div class="row">
+        <div class="col-sm-4 col-lg-3">
+            <div ng-controller="DiskListCtrl" ng-include="'static/components/diskList.html'"></div>
         </div>
-        <div class="col-md-4">
-            <div ng-controller="DiskInfoCtrl" ng-include="'static/components/diskinfo.html'"></div>
+        <div class="col-sm-8 col-lg-9">
+            <div ng-controller="JobListCtrl" ng-include="'static/components/jobList.html'"></div>
         </div>
     {% endraw %}
 
