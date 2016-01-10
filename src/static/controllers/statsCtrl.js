@@ -1,4 +1,4 @@
-AppModule.controller('StatsCtrl', ['$scope', '$interval', function($scope, $interval) {
+AppModule.controller('StatsCtrl', ['$scope', '$interval', 'socket', function($scope, $interval, socket) {
     $scope.labels = [];
     $scope.series = ['Localhost', 'Raspberry'];
     $scope.options = {

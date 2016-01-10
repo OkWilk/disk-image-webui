@@ -8,7 +8,6 @@ import requests
 
 
 # TODO: fix status codes
-# TODO: add to update node config
 class Node(Resource, Observable):
     def __init__(self):
         Observable.__init__(self)

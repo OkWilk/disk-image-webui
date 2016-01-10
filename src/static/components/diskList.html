@@ -17,7 +17,7 @@
                 <tbody>
                     <tr ng-repeat="disk in disks">
                         <td class="fit">
-                            <span class="label label-default" style="padding:5px" uib-popover="<strong>Size:</strong> {{humanSize(disk.size)}}" popover-title='<strong>Disk:</strong> {{disk.name}}' popover-trigger="mouseenter">{{disk.name}}</span>
+                            <span class="label label-default" style="padding:5px" uib-popover="<strong>Size:</strong> {{parseSize(disk.size)}}" popover-placement="right" popover-title='<strong>Disk:</strong> {{disk.name}}' popover-trigger="mouseenter">{{disk.name}}</span>
                         </td>
                         <td>
                             <div class="progress no-margin">

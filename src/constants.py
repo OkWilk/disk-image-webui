@@ -5,3 +5,4 @@ DB_CONFIG = {
     'password': '',
     'database': 'DiskImage'
 }
+DATE_FORMAT = '%d/%m/%Y %H:%M:%S'

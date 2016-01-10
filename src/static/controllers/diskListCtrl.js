@@ -1,18 +1,16 @@
-AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal', '$log', function($scope, $http, $interval, $uibModal, $log) {
-    $scope.humanSize = function(bytes) {
-        var threshold = 1024;
-        if(Math.abs(bytes) < threshold) {
-            return bytes + ' B';
-        }
-        var units = ['kB','MB','GB','TB','PB','EB','ZB','YB'];
-        var unitIndex = -1;
-        do {
-            bytes /= threshold;
-            ++unitIndex;
-        } while(Math.abs(bytes) >= threshold && unitIndex < units.length - 1);
-        return bytes.toFixed(1)+' '+units[unitIndex];
-    };
+AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal', '$log', 'SizeParser',
+    function($scope, $http, $interval, $uibModal, $log, SizeParser) {
 
+    var init = function() {
+        $scope.parseSize = SizeParser.parse;
+        $scope.status = {
+            open: false,
+            updating: true,
+            countdown: 1
+        };
+        intervalUpdate();
+        $scope.update()
+    }
     $scope.getDiskInfo = function() {
         $http.get('/api/disk').
         success(function(data, status, headers, config) {
@@ -60,11 +58,13 @@ AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal
         $interval($scope.update, 10000);
     }
     $scope.getPercentage = function(size, total) {
-        percentage = Math.floor((size / total) * 100)
-        if (percentage < 1) {
-            return 0.5 + "%"
+        percentage = Math.floor((size / total) * 100);
+        if(percentage < 1) {
+            return 1 + "%";
+        } else if (percentage > 25) {
+            return (percentage - 1) + "%";
         } else {
-            return percentage + "%"
+            return percentage + "%";
         }
     }
     $scope.partitionInfo = function(partition) {
@@ -74,14 +74,8 @@ AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal
         } else {
             info += "raw"
         }
-        info += "<br/><b>Size: </b>" + $scope.humanSize(partition.size) + "</p>"
+        info += "<br/><b>Size: </b>" + SizeParser.parse(partition.size) + "</p>"
         return info
     }
-    $scope.status = {
-        open: false,
-        updating: true,
-        countdown: 1
-    };
-    intervalUpdate();
-    $scope.update()
+    init();
 }]);
