@@ -73,5 +73,4 @@ class Node(Resource, Observable):
             self.update_observers()
             return 'OK', 200
         else:
-            self.update_observers()
             return self._insert_node(data)

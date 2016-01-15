@@ -4,6 +4,7 @@ AppModule.controller("CreateBackupModalCtrl", ['$scope', '$http', '$uibModalInst
         $scope.node = node;
         $scope.disk = disk;
         $scope.backup = {
+            node: node,
             job_id: "",
             disk: disk.name,
             operation: "Backup",

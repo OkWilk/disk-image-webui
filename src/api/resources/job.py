@@ -7,17 +7,6 @@ import requests
 class Job(Resource):
     RESOURCE_ADDRESS = '/api/job'
 
-    def get(self):
-        jobs = {}
-        for node in NodeConfig.nodes:
-            if NodeConfig.is_enabled_node(node):
-                try:
-                    r = requests.get(NodeConfig.get_node_url(node) + self.RESOURCE_ADDRESS)
-                    jobs[node['name']] = r.json()
-                except:
-                    pass
-        return jobs
-
     def post(self, node_id):
         try:
             node = NodeConfig.get_node(node_id)
@@ -27,10 +16,3 @@ class Job(Resource):
         except:
             abort(404, message="Invalid resource requested.")
 
-    def delete(self, node_id, job_id):
-        try:
-            node = NodeConfig.get_node(node_id)
-            r = requests.delete(NodeConfig.get_node_url(node) + self.RESOURCE_ADDRESS + '/' + job_id)
-            return r.text, r.status_code
-        except:
-            abort(404, message="Invalid resource requested.")

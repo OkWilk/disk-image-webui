@@ -11,7 +11,30 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'SizeParser', functio
                 $scope.backups = response.data;
             },
             function(reason) {
-                console.log(reason)
+                console.log(reason.data)
+            }
+        )
+    };
+    $scope.mount = function(backup) {
+        payload = {
+            backup_id: backup.id
+        }
+        $http.post('/api/' + backup.node +'/mount', payload).then(
+            function(response) {
+                $scope.refresh();
+            },
+            function(reason) {
+                alert(reason.data)
+            }
+        )
+    };
+    $scope.unmount = function(backup) {
+        $http.delete('/api/' + backup.node + '/mount/' + backup.id).then(
+            function(response) {
+                $scope.refresh();
+            },
+            function(reason) {
+                alert(reason.data);
             }
         )
     };
@@ -21,7 +44,7 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'SizeParser', functio
                 $scope.refresh();
             },
             function(reason) {
-                alert("Could not remove backup, reason: " + reason)
+                alert("Could not remove backup, reason: " + reason.data)
             }
         )
     };

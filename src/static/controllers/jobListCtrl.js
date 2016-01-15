@@ -1,19 +1,10 @@
-AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval', '$log',
-    function($scope, $http, $uibModal, $interval, $log) {
-        $scope.status = {
-            loading: false
-        };
+AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval', '$log', 'MasterModel',
+    function($scope, $http, $uibModal, $interval, $log, MasterModel) {
+
+        $scope.model = MasterModel
+
         $scope.update = function() {
-            $scope.status.loading = true;
-            $http.get('/api/job').then(
-                function(response) {
-                    $scope.jobs = response.data;
-                    $scope.status.loading = false;
-                },
-                function(reason) {
-                    $scope.error = "Could not fetch job data.";
-                }
-            );
+            MasterModel.jobs.get()
         };
         $scope.getProgressValue = function(job) {
             if(job.partitions.length > 0){
@@ -22,7 +13,7 @@ AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval'
                     progress += parseInt(partition.completed);
                 });
                 progress /= job.partitions.length;
-                return progress;
+                return Math.round(progress);
             }
             return 0;
         }
@@ -38,15 +29,8 @@ AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval'
                     return 'warning';
             }
         };
-        $scope.finishJob = function(node, jobId) {
-            $http.delete('/api/' + node + '/job/' + jobId).then(
-                function(response) {
-                    $scope.update();
-                },
-                function(reason) {
-                    $scope.error = "Could not finish job.";
-                }
-            );
+        $scope.finishJob = function(node, job) {
+            MasterModel.jobs.del(node, job);
         };
         $scope.showDetails = function(node, job) {
             var uibModalInstance = $uibModal.open({
@@ -63,11 +47,7 @@ AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval'
                 }
             });
         };
-        var intervalUpdate = function() {
-            $interval($scope.update, 3000);
-        };
 
-        intervalUpdate();
         $scope.update();
     }
 ]);

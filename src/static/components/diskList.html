@@ -2,13 +2,13 @@
     <div class="panel-heading clearfix">
         Disks
         <div class="pull-right">
-            <button class="btn btn-default btn-xs" ng-click="update()" ng-disabled="status.loading">
-                <i ng-if="status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
+            <button class="btn btn-default btn-xs" ng-click="update()" ng-disabled="model.disks.status.loading">
+                <i ng-if="model.disks.status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
         </div>
     </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table table-condenset table-hover" ng-repeat="(node, disks) in disks">
+            <table class="table table-condenset table-hover" ng-repeat="(node, disks) in model.disks.data">
                 <thead>
                     <tr>
                         <th colspan="3">{{node}}</th>
@@ -21,16 +21,15 @@
                         </td>
                         <td>
                             <div class="progress no-margin">
-                                <div class="progress-bar text-center" ng-repeat="partition in disk.partitions" role="progressbar" style="
-                                             width:{{getPercentage(partition.size,disk.size)}};
-                                             border-width:0px 1px 0px 1px;
-                                             border-style:solid;
-                                             border-color:light-grey" uib-popover="{{partitionInfo(partition)}}" popover-title='<strong>Partition:</strong> {{partition.name}}' popover-trigger="mouseenter" popover-append-to-body="true">
+                                <div class="progress-bar partition-bar text-center" ng-repeat="partition in disk.partitions" role="progressbar"
+                                     style="width:{{getPercentage(partition.size,disk.size)}};" uib-popover="{{partitionInfo(partition)}}"
+                                     popover-title='<strong>Partition:</strong> {{partition.name}}' popover-trigger="mouseenter"
+                                     popover-append-to-body="true">
                                 </div>
                             </div>
                         </td>
                         <td class="fit">
-                            <button class="btn btn-primary btn-xs" ng-click="backup(node, disk)">Backup</button>
+                            <button class="btn btn-primary btn-xs" ng-click="backup(node, disk)" ng-disabled="isDiskBusy(node, disk)">Backup</button>
                         </td>
                     </tr>
                 </tbody>
