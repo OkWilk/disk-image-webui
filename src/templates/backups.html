@@ -3,54 +3,75 @@
 {% endblock %} {% block body %} {% raw %}
 <div class="container" ng-controller="BackupListCtrl">
     <div class="table-responsive">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" st-pipe="callServer" st-table="backups">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Node</th>
-                    <th>Size</th>
+                    <th>Backup Size</th>
+                    <th>Disk Size</th>
+                    <th>Status</th>
                     <th>Created</th>
-                    <th class="fit">Controlls</th>
+                    <th class="fit"> Controls </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" ng-model="idSearch" class="form-control" ng-model-options="{ debounce: 1000 }" ng-change="callServer()">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="nodeSearch" class="form-control" ng-model-options="{ debounce: 1000 }" ng-change="callServer()">
+                    </td>
+                    <td colspan="3">
+                    </td>
+                    <td>
+                        <div class="checkbox">
+                            <label for="show_deleted"><input type="checkbox" ng-model="showDeleted" id="show_deleted" ng-change="callServer()"> Show deleted</label>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-default" ng-click="callServer()"><i ng-if="loading" class="glyphicon glyphicon-refresh"></i> Search</button>
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <input type="text" placeholder="backup id" ng-model="searchId">
-                    </td>
-                    <td>
-                        <input type="text" placeholder="node" ng-model="searchNode">
-                    </td>
-                    <td>
-                        <label for="show_deleted"><input type="checkbox" id="show_deleted" ng-model="searchDeleted"> Show deleted</label>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <button class="btn btn-default">Search</button>
-                    </td>
-                </tr>
                 <tr ng-repeat="backup in backups">
                     <td>{{backup.id}}</td>
                     <td>{{backup.node}}</td>
                     <td>{{parseSize(backup.backup_size)}}</td>
+                    <td>{{parseSize(backup.disk_size)}}</td>
+                    <td>{{mounted = model.mounts.isMounted(backup);""}}
+                        <div class="label label-warning stackable-label" ng-show="backup.status === 'error'">error</div>
+                        <div class="label label-default stackable-label" ng-show="backup.status === 'running'">running</div>
+                        <div class="label label-success stackable-label" ng-show="backup.status === 'finished'">finished</div>
+                        <div class="label label-default stackable-label" ng-show="backup.compressed">compressed</div>
+                        <div class="label label-danger stackable-label" ng-show="backup.deleted">deleted</div>
+                        <div class="label label-primary stackable-label" ng-show="mounted">mounted</div>
+                    </td>
                     <td>{{backup.creation_date}}</td>
                     <td class="fit">
                          <div class="btn-group" uib-dropdown dropdown-append-to-body>
-                          <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+                          <button type="button" class="btn btn-primary" uib-dropdown-toggle ng-hide="(backup.deleted || backup.status != 'finished')">
                             Action <span class="caret"></span>
                           </button>
                           <ul uib-dropdown-menu role="menu">
-                            <li role="menuitem"><a href="#" ng-click="mount(backup)">Mount</a></li>
-                            <li role="menuitem"><a href="#" ng-click="unmount(backup)">Unmount</a></li>
+                            <li role="menuitem"><a href="#" ng-click="mount(backup)" ng-hide="mounted">Mount</a></li>
+                            <li role="menuitem"><a href="#" ng-click="unmount(backup)" ng-show="mounted">Unmount</a></li>
                             <li role="menuitem"><a href="#" ng-click="restore(backup)">Restore</a></li>
-                            <li class="divider"></li>
-                            <li role="menuitem"><a href="#" ng-click="delete(backup)">Delete</a></li>
+                            <li class="divider" ng-hide="mounted"></li>
+                            <li role="menuitem"><a href="#" ng-click="delete(backup)" ng-hide="mounted">Delete</a></li>
                           </ul>
                         </div>
+                        <button type="button" class="btn btn-danger" ng-show="backup.status === 'error' && !backup.deleted" ng-click="delete(backup)">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="pagination" st-items-by-page="10" colspan="7"></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>

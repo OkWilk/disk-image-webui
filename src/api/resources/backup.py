@@ -1,24 +1,27 @@
-from lib.mdbconnector import MongoConnector, to_list
-from flask import request
-from flask_restful import Resource, abort
-from api.nodeconfig import NodeConfig
 from datetime import datetime
+
+from flask import request
+from flask_restful import Resource
+from pymongo import DESCENDING
+
 import constants
-import requests
+from lib.mdbconnector import MongoConnector, to_list
 
 
 class Backup(Resource):
-    DEFAULT_LIMIT = 30
+    DEFAULT_LIMIT = 20
     DEFAULT_OFFSET = 0
 
     def get(self, backup_id=None, node_id=None):
         limit = int(request.args.get('limit', self.DEFAULT_LIMIT))
         offset = int(request.args.get('offset', self.DEFAULT_OFFSET))
-        deleted = bool(request.args.get('deleted', False))
-        if backup_id:
-            return self._get_backup_details(backup_id)
+        deleted = bool(request.args.get('deleted', False) == 'true')
+        id = request.args.get('id', '')
+        node = request.args.get('node', '')
+        if id:
+            return self._get_backup_details(id, limit, offset)
         else:
-            return self._get_backup_list(node_id, deleted, limit, offset)
+            return self._get_backup_list(node, deleted, limit, offset)
 
     def _get_backup_list(self, node_id=None, show_deleted=False, limit=DEFAULT_LIMIT, offset=DEFAULT_OFFSET):
         with MongoConnector(constants.DB_CONFIG) as db:
@@ -26,15 +29,28 @@ class Backup(Resource):
             if not show_deleted:
                 query['deleted'] = False
             if node_id:
-                query['id'] = node_id
-            data = db.backup.find(query, {'_id': 0}).skip(offset).limit(limit)
-        return to_list(data)
+                query['node'] = node_id
+            data = db.backup.find(query, {'_id': 0}).sort('creation_date', DESCENDING).skip(offset).limit(limit)
+            payload = {
+                'data': to_list(data),
+                'offset': offset,
+                'limit': limit,
+                'total': data.count()
+            }
+        return payload
 
-    def _get_backup_details(self, backup_id):
+    def _get_backup_details(self, backup_id, limit, offset):
         with MongoConnector(constants.DB_CONFIG) as db:
-            data = db.backup.find_one({'id': backup_id}, {'_id':0})
+            data = db.backup.find({'id': {'$regex': str(backup_id)}}, {'_id':0}).sort('creation_date', DESCENDING)\
+                .skip(offset).limit(limit)
         if data:
-            return data
+            payload = {
+                'data': to_list(data),
+                'offset': offset,
+                'limit': limit,
+                'total': data.count(),
+            }
+            return payload
         else:
             return "Requested resource is not available.", 404
 

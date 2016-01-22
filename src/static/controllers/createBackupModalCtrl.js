@@ -8,7 +8,7 @@ AppModule.controller("CreateBackupModalCtrl", ['$scope', '$http', '$uibModalInst
             job_id: "",
             disk: disk.name,
             operation: "Backup",
-            compress: true,
+            compress: false,
             overwrite: false,
             rescue: false,
             space_check: true,

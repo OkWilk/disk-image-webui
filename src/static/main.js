@@ -1,4 +1,4 @@
-var AppModule = angular.module("com.itcarlow.okwilk.diskimage", ['ui.bootstrap', 'chart.js']);
+var AppModule = angular.module("com.itcarlow.okwilk.diskimage", ['ui.bootstrap', 'chart.js', 'smart-table']);
 
 AppModule.filter('unsafe', ['$sce', function ($sce) {
     return function (val) {

@@ -1,47 +1,59 @@
-AppModule.controller("BackupListCtrl", ['$scope', '$http', 'SizeParser', function($scope, $http, SizeParser){
+AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeParser', '$filter',
+          function($scope, $http, MasterModel, SizeParser, $filter){
     resource = '/api/backup';
 
     var init = function() {
+        $scope.model = MasterModel;
         $scope.parseSize = SizeParser.parse;
-        $scope.refresh();
-    }
-    $scope.refresh = function() {
-        $http.get(resource).then(
+        $scope.showDeleted = false;
+    };
+
+    $scope.callServer = function(tableState) {
+        $scope.loading = true;
+        if($scope.tableState === undefined) { // Save table state
+            $scope.tableState = tableState;
+        } else if (tableState === undefined) { // restore previous state when called manually
+            tableState = $scope.tableState;
+        }
+        $scope.pagination = tableState.pagination;
+        var start = $scope.pagination.start || 0;
+        var number = $scope.pagination.number || 10;
+
+        $http.get(resource + buildQuerystring(number, start)).then(
             function(response) {
-                $scope.backups = response.data;
+                payload = response.data;
+                $scope.backups = payload.data;
+                $scope.pagination.numberOfPages = Math.ceil(payload.total / number);
+                $scope.pagination.totalItemCount = payload.total;
+                $scope.loading = false;
             },
             function(reason) {
-                console.log(reason.data)
+                $scope.loading = false;
             }
         )
     };
-    $scope.mount = function(backup) {
-        payload = {
-            backup_id: backup.id
+
+    var buildQuerystring = function(number, start) {
+        querystring = '?limit=' + number + '&offset=' + start + '&deleted=' + $scope.showDeleted
+        if($scope.idSearch) {
+            querystring += '&id=' + $scope.idSearch;
         }
-        $http.post('/api/' + backup.node +'/mount', payload).then(
-            function(response) {
-                $scope.refresh();
-            },
-            function(reason) {
-                alert(reason.data)
-            }
-        )
+        if($scope.nodeSearch) {
+            querystring += '&node=' + $scope.nodeSearch;
+        }
+        return querystring
+    }
+
+    $scope.mount = function(backup) {
+        $scope.model.mounts.mount(backup)
     };
     $scope.unmount = function(backup) {
-        $http.delete('/api/' + backup.node + '/mount/' + backup.id).then(
-            function(response) {
-                $scope.refresh();
-            },
-            function(reason) {
-                alert(reason.data);
-            }
-        )
+        $scope.model.mounts.unmount(backup.node, backup.id)
     };
     $scope.delete = function(backup) {
         $http.delete(resource + '/' + backup.id).then(
             function(response) {
-                $scope.refresh();
+                $scope.callServer();
             },
             function(reason) {
                 alert("Could not remove backup, reason: " + reason.data)

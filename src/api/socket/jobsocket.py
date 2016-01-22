@@ -1,10 +1,9 @@
-from .socketresource import SocketResource
-from api.resources.job import Job
-from .socketprovider import SocketProvider
-from ..nodeconfig import NodeConfig
 import requests
-import constants
 
+import constants
+from .socketprovider import SocketProvider
+from .socketresource import SocketResource
+from ..nodeconfig import NodeConfig
 
 socket = SocketProvider.get_socket()
 
@@ -19,29 +18,38 @@ class JobSocket(SocketResource):
         if self.data != data:
             self.data = data
             self._broadcast_jobs()
-            return True
-        return False
 
     def _get_data(self):
         jobs = {}
         for node in NodeConfig.nodes:
             if NodeConfig.is_enabled_node(node):
                 try:
-                    r = requests.get(NodeConfig.get_node_url(node) + constants.JOB_RESOURCE)
+                    r = requests.get(NodeConfig.get_node_url(node) + constants.JOB_RESOURCE,
+                                     timeout=constants.GET_TIMEOUT)
                     jobs[node['name']] = r.json()
-                except:
-                    pass
+                except Exception as e:
+                    self._logger.warning('Exception while retrieving job data. Cause: ' + str(e))
         return jobs
 
     def delete(self, node_id, job_id):
         try:
             node_id = NodeConfig.get_node(node_id)
-            r = requests.delete(NodeConfig.get_node_url(node_id) + constants.JOB_RESOURCE + '/' + job_id)
+            r = requests.delete(NodeConfig.get_node_url(node_id) + constants.JOB_RESOURCE + '/' + job_id,
+                                timeout=constants.LONG_TIMEOUT)
             if r.status_code == 200:
                 self.update()
             return r.text, r.status_code
-        except:
-            return "Invalid resource requested."
+        except Exception as e:
+            self._logger.warning("Exception while removing job. Cause: " + str(e))
+            return "Invalid resource requested.", 400
+
+    def create(self, node_id, payload):
+        try:
+            r = requests.post(NodeConfig.get_node_url(node_id) + constants.JOB_RESOURCE, json=payload,
+                              timeout=constants.LONG_TIMEOUT)
+            return r.text, r.status_code
+        except Exception as e:
+            self._logger.warning("Exception while adding a new job. Cause: " + str(e))
 
 job = JobSocket(constants.JOB_REFRESH_INTERVAL)
 job.start()
@@ -65,7 +73,6 @@ def post_job(payload):
     try:
         node = NodeConfig.get_node(payload['node'])
         payload.pop('node')
-        r = requests.post(NodeConfig.get_node_url(node) + constants.JOB_RESOURCE, json=payload)
-        return r.text, r.status_code
-    except:
-        return "Invalid resource requested.", 400
+        return job.create(node, payload)
+    except KeyError as e:
+        return "Invalid payload format, the required 'node' parameter was not provided.", 400

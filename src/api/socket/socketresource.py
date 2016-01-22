@@ -1,3 +1,4 @@
+import logging
 from threading import Thread, Lock
 from time import sleep
 
@@ -7,6 +8,7 @@ class SocketResource:
     def __init__(self, interval):
         self.data = {}
         self.interval = interval
+        self._logger = logging.getLogger(__name__)
         self._lock = Lock()
         self._thread = None
 

@@ -32,5 +32,7 @@ AppModule.service("JobModel", ["$log","socket", function($log, socket) {
         })
     }
 
+    JobModel.get();
+
     return JobModel;
 }])
