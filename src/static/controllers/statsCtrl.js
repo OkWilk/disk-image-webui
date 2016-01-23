@@ -1,52 +1,47 @@
-AppModule.controller('StatsCtrl', ['$scope', '$interval', 'socket', function($scope, $interval, socket) {
-    $scope.labels = [];
-    $scope.series = ['Localhost', 'Raspberry'];
-    $scope.options = {
-        pointDot: false,
-        datasetFill: false,
-        animation: false,
-        showTooltips: false,
-        scaleShowVerticalLines: false
-    };
-    $scope.update = function() {
-        updateData($scope.data1);
-        updateData($scope.data2);
-        updateData($scope.data3);
-        updateData($scope.data4);
-    };
+AppModule.controller('StatsCtrl', ['$scope', '$log', '$interval', 'MasterModel', function($scope, $log, $interval, MasterModel) {
+
+    var init = function() {
+        initCharts();
+        MasterModel.metrics.addObserverCallback(updateData);
+    }
+
     var initCharts = function() {
-        for(i = 0; i < 30; ++i){
+        $scope.model = MasterModel;
+        $scope.labels = [];
+        $scope.series = [];
+        $scope.options = {
+            pointDot: false,
+            datasetFill: false,
+            animation: false,
+            showTooltips: false,
+            scaleShowVerticalLines: false,
+            scaleOverride: true,
+            scaleSteps: 5,
+            scaleStepWidth: 20,
+            scaleStartValue: 0
+        };
+        for(i = 0; i < 60; ++i){
             $scope.labels.push("");
         }
-        $scope.data1 = [
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue),
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue)
-        ];
-        $scope.data2 = [
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue),
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue)
-        ];
-        $scope.data3 = [
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue),
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue)
-        ];
-        $scope.data4 = [
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue),
-            Array.apply(null, {length: 30}).map(Function.call, getRandomValue)
-        ];
     };
-    var updateData = function(data) {
-        angular.forEach(data, function(list){
-            list.splice(0,1);
-            list.push(getRandomValue());
+
+    var updateData = function() {
+        $scope.series = Object.keys($scope.model.metrics.data);
+        cpuUtil = [];
+        ramUtil = [];
+        diskUtil = [];
+        diskIOUtil = [];
+        angular.forEach($scope.series, function(key, index) {
+            cpuUtil[index] = $scope.model.metrics.data[key]['CPU_Utilisation'];
+            ramUtil[index] = $scope.model.metrics.data[key]['RAM_Utilisation'];
+            diskUtil[index] = $scope.model.metrics.data[key]['DiskSpace'];
+            diskIOUtil[index] = $scope.model.metrics.data[key]['Disk_IO_Utilisation'];
         })
+        $scope.cpuUtil = cpuUtil;
+        $scope.ramUtil = ramUtil;
+        $scope.diskUtil = diskUtil;
+        $scope.diskIOUtil = diskIOUtil
     }
-    var getRandomValue = function() {
-        return Math.floor(Math.random() * 100);
-    }
-    var intervalUpdate = function() {
-        $interval($scope.update, 3000);
-    };
-    intervalUpdate();
-    initCharts();
+
+    init();
 }])

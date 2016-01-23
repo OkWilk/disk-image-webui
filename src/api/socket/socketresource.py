@@ -14,7 +14,7 @@ class SocketResource:
 
     def start(self):
         if not self._thread:
-            self._thread = Thread(target=self._start_interval)
+            self._thread = Thread(target=self._start_interval,daemon=True)
             self._thread.start()
 
     def stop(self):

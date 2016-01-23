@@ -1,9 +1,11 @@
-AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", function(DiskModel, JobModel, MountModel) {
+AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", "MetricModel",
+    function(DiskModel, JobModel, MountModel, MetricModel) {
+
     MasterModel = {
         jobs: JobModel,
         mounts: MountModel,
         disks: DiskModel,
-        metrics: {}
+        metrics: MetricModel
     }
     MasterModel.isDiskBusy = function(node, disk) {
         if(MasterModel.jobs.data) {

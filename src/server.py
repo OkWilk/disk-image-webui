@@ -15,6 +15,8 @@ SocketProvider.set_socket(socket)
 import api.socket.disksocket as disksocket
 import api.socket.jobsocket as jobsocket
 import api.socket.mountsocket as mountsocket
+import api.socket.metricsocket as metricsocket
+
 
 @app.route('/')
 def index():
