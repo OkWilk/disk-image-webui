@@ -7,6 +7,14 @@ AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", "Metric
         disks: DiskModel,
         metrics: MetricModel
     }
+
+    MasterModel.update = function() {
+        MasterModel.jobs.get();
+        MasterModel.mounts.get();
+        MasterModel.disks.get();
+        MasterModel.metrics.get();
+    }
+
     MasterModel.isDiskBusy = function(node, disk) {
         if(MasterModel.jobs.data) {
             current_jobs = MasterModel.jobs.data[node];

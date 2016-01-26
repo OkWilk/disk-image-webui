@@ -22,7 +22,7 @@
                         <td>
                             <div class="progress no-margin">
                                 <div class="progress-bar partition-bar text-center" ng-repeat="partition in disk.partitions" role="progressbar"
-                                     style="width:{{getPercentage(partition.size,disk.size)}};" uib-popover="{{partitionInfo(partition)}}"
+                                     style="width:{{getSubjectivePercentage(partition.size,disk.size)}};" uib-popover="{{partitionInfo(partition)}}"
                                      popover-title='<strong>Partition:</strong> {{partition.name}}' popover-trigger="mouseenter"
                                      popover-append-to-body="true">
                                 </div>

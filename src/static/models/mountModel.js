@@ -38,7 +38,12 @@ AppModule.service("MountModel", ["$log","socket", function($log, socket) {
             node_id: backup.node,
             backup_id: backup.id
         }
-        socket.emit('post:mount', payload, function(response) {})
+        socket.emit('post:mount', payload, function(response) {
+            response = response.trim()
+            if(response != '"OK"') {
+                alert(response);
+            }
+        })
     }
 
     MountModel.isMounted = function(backup) {

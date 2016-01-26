@@ -1,4 +1,5 @@
-AppModule.controller("CreateBackupModalCtrl", ['$scope', '$http', '$uibModalInstance', 'node', 'disk', function($scope, $http, $uibModalInstance, node, disk) {
+AppModule.controller("CreateBackupModalCtrl", ['$scope', '$http', '$uibModalInstance', 'node', 'disk',
+function($scope, $http, $uibModalInstance, node, disk) {
     var initModal = function() {
         $scope.title = "Create Backup";
         $scope.node = node;

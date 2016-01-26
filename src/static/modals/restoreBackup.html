@@ -1,0 +1,84 @@
+<div class="modal-header">
+    <h3 class="inline-title">{{title}}</h3>
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-horizontal" role="form" novalidate>
+        <div class="table-responsive form-group" ng-class="{ 'has-error' : form.disk.$invalid }">
+            <table class="table table-condenset table-hover" ng-repeat="(node, disks) in model.disks.data" ng-show="node == restoration.node">
+                <thead>
+                    <tr>
+                        <th colspan="3">{{node}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="disk in disks" ng-class="isSelectedDisk(node, disk) ? 'warning' : 'default'">
+                        <td class="fit">
+                            <span class="label label-default" style="padding:5px" popover-placement="right"
+                                  uib-popover="<strong>Size:</strong> {{parseSize(disk.size)}}"
+                                  popover-title='<strong>Disk:</strong> {{disk.name}}'
+                                  popover-trigger="mouseenter">{{disk.name}}</span>
+                        </td>
+                        <td>
+                            <div class="progress no-margin">
+                                <div class="progress-bar partition-bar text-center" ng-repeat="partition in disk.partitions"
+                                     role="progressbar" style="width:{{getSubjectivePercentage(partition.size,disk.size)}};"
+                                     ng-class="isSelectedDisk(node, disk) ? 'progress-bar-warning' : 'progress-bar-default'"
+                                     uib-popover="{{partitionInfo(partition)}}" popover-trigger="mouseenter"
+                                     popover-append-to-body="true" popover-title='<strong>Partition:</strong> {{partition.name}}' >
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fit">
+                            <button class="btn btn-warning btn-xs" ng-click="selectDisk(node, disk)"
+                                    ng-disabled="isDiskBusy(node, disk)">Select</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot ng-if="form.$invalid && form.disk.$error">
+                    <tr>
+                        <td colspan="3">
+                            <div ng-messages="form.disk.$error">
+                                <div ng-message="required" class="text-danger">Please select a target disk.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="disk">Target Disk:</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="disk" name="disk" ng-model="targetDisk" disabled="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label class="inline-checkbox-label" for="overwrite">
+                        <input type="checkbox" id="overwrite" ng-model="restoration.overwrite">Overwrite</label>
+                    <label class="inline-checkbox-label" for="force">
+                        <input type="checkbox" id="force" ng-model="restoration.force">Force</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                   <label class="inline-checkbox-label" for="space_check">
+                        <input type="checkbox" id="space_check" ng-model="restoration.space_check">Space check</label>
+                   <label class="inline-checkbox-label" for="fs_check">
+                        <input type="checkbox" id="fs_check" ng-model="restoration.fs_check">Filesystem check</label>
+                   <label class="inline-checkbox-label" for="crc_check">
+                        <input type="checkbox" id="crc_check" ng-model="restoration.crc_check">Integrity check</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="col-sm-12 text-right">
+        <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!form.$valid">Run</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

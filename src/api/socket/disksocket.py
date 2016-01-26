@@ -28,7 +28,7 @@ class DiskSocket(SocketResource):
 
     def _get_disk_list(self, node):
         try:
-            r = requests.get(NodeConfig.get_node_url(node) + constants.DISK_RESOURCE, timeout=constants.GET_TIMEOUT)
+            r = requests.get(NodeConfig.get_node_url(node) + constants.DISK_RESOURCE, timeout=constants.LONG_TIMEOUT)
             disk_list = []
             for disk in r.json():
                 if not NodeConfig.is_ignored_disk(node, disk['name']):

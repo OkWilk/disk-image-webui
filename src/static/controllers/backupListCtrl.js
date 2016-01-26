@@ -1,5 +1,5 @@
-AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeParser', '$filter',
-          function($scope, $http, MasterModel, SizeParser, $filter){
+AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeParser', '$filter', "$uibModal", "$log",
+          function($scope, $http, MasterModel, SizeParser, $filter, $uibModal, $log){
     resource = '/api/backup';
 
     var init = function() {
@@ -60,5 +60,24 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeP
             }
         )
     };
+    $scope.restore = function(backup) {
+        var uibModalInstance = $uibModal.open({
+            templateUrl: '/static/modals/restoreBackup.html',
+            controller: 'RestoreBackupModalCtrl',
+            backdrop: 'static',
+            resolve: {
+                backup: function() {
+                    return angular.copy(backup);
+                }
+            }
+        });
+        uibModalInstance.result.then(
+            function(result) {
+                MasterModel.jobs.post(result)
+                $log.info(result)
+            },
+            function() { }
+        );
+    }
     init();
 }])

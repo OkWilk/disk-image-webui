@@ -17,14 +17,17 @@ class MetricSocket(SocketResource):
         socket.emit('get:metric', self.metrics, broadcast=True)
 
     def _update_data(self):
-        data = self._get_data()
-        self._remove_missing_nodes(data)
-        for node in data.keys():
-            if node not in self.metrics:
-                self.metrics[node] = {}
-            for metric in data[node].keys():
-                self._update_metric(node, metric, data[node][metric])
-        self._broadcast_data()
+        try:
+            data = self._get_data()
+            self._remove_missing_nodes(data)
+            for node in data.keys():
+                if node not in self.metrics:
+                    self.metrics[node] = {}
+                for metric in data[node].keys():
+                    self._update_metric(node, metric, data[node][metric])
+            self._broadcast_data()
+        except Exception as e:
+            self._logger.warning("Failed to update metrics. Cause: : " + str(e))
 
     def _remove_missing_nodes(self, data):
         for node in self.metrics.keys():
