@@ -68,6 +68,9 @@ div[class^="col"] { /* Reduce gutter between columns */
 .clickable-addon:active {
     cursor: pointer;
 }
+.modal-body.ng-binding.ng-scope {
+    white-space: pre-wrap;
+}
 
 
 /* Chart.js overrides */

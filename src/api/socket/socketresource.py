@@ -5,7 +5,7 @@ from time import sleep
 
 class SocketResource:
 
-    def __init__(self, interval):
+    def __init__(self, interval=0):
         self.data = {}
         self.interval = interval
         self._logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalInstance', 'MasterModel', 'backup', '$log',
-'SizeParser', 'PartitionInfo', function($scope, $http, $uibModalInstance, MasterModel, backup, $log, SizeParser,
-PartitionInfo) {
+    'SizeParser', 'PartitionInfo', '$confirm',
+    function($scope, $http, $uibModalInstance, MasterModel, backup, $log, SizeParser, PartitionInfo, $confirm) {
 
     var initModal = function() {
         MasterModel.update();
@@ -38,12 +38,19 @@ PartitionInfo) {
     $scope.getSubjectivePercentage = SizeParser.getSubjectivePercentage;
     $scope.parseSize = SizeParser.parse;
     $scope.partitionInfo = PartitionInfo.getInfo;
+    $scope.isDiskBusy = MasterModel.isDiskBusy;
 
     $scope.cancel = function() {
         $uibModalInstance.dismiss();
     };
     $scope.ok = function() {
-        $uibModalInstance.close($scope.restoration)
+        $confirm({title: "Restore backup", text:"Are you sure you want to restore backup '" +
+                        $scope.restoration.job_id + "' on " + $scope.restoration.disk +
+                        "? \n\nWarning: this operation will overwrite all previous data on this disk."}).then(
+            function() {
+                $uibModalInstance.close($scope.restoration)
+            }
+        )
     };
 
     initModal();

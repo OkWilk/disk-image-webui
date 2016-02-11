@@ -35,7 +35,7 @@ class MountSocket(SocketResource):
         try:
             node = NodeConfig.get_node(node_id)
             r = requests.post(NodeConfig.get_node_url(node) + constants.MOUNT_RESOURCE, json=payload)
-            return r.text, r.status_code
+            return r.json()
         except Exception as e:
             self._logger.warn("Exception while mounting backup. Cause: " + str(e))
             return 'Invalid resource requested.', 404
@@ -45,7 +45,7 @@ class MountSocket(SocketResource):
             node = NodeConfig.get_node(node_id)
             r = requests.delete(NodeConfig.get_node_url(node) + constants.MOUNT_RESOURCE + '/' + backup_id,
                                 timeout=constants.LONG_TIMEOUT)
-            return r.text, r.status_code
+            return r.json()
         except Exception as e:
             self._logger.warn("Exception while unmounting backup. Cause: " + str(e))
             return 'Invalid resource requested.', 404
@@ -74,5 +74,8 @@ def delete_mount(payload):
 @socket.on('post:mount')
 def create_mount(payload):
     if 'node_id' in payload and 'backup_id' in payload:
-        return mount.mount(payload['node_id'], payload)
+        result = mount.mount(payload['node_id'], payload)
+        if 'OK' in result:
+            mount.update()
+        return result
     return "Missing node_id or backup_id in payload.", 400

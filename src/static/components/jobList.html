@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="job in jobs" class="{{getProgressType(job.status)}}">
+                    <tr ng-repeat="job in jobs | orderBy:'-start_time'" class="{{getProgressType(job.status)}}">
                         <td class="fit" ng-click="showDetails(node, job)"><strong>{{job.id}}</strong></td>
                         <td ng-click="showDetails(node, job)">
                             <uib-progressbar class="no-padding no-margin" animate="true" max="100" value="getProgressValue(job)" type="{{getProgressType(job.status)}}">{{getProgressValue(job)}}%</uib-progressbar>

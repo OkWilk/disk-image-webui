@@ -1,49 +1,30 @@
-AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeParser', '$filter', "$uibModal", "$log",
-          function($scope, $http, MasterModel, SizeParser, $filter, $uibModal, $log){
-    resource = '/api/backup';
+AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
+    '$uibModal', '$log', 'toaster', '$confirm',
+    function($scope, $http, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, toaster, $confirm){
 
     var init = function() {
         $scope.model = MasterModel;
         $scope.parseSize = SizeParser.parse;
         $scope.showDeleted = false;
     };
-
     $scope.callServer = function(tableState) {
         $scope.loading = true;
         if($scope.tableState === undefined) { // Save table state
             $scope.tableState = tableState;
-        } else if (tableState === undefined) { // restore previous state when called manually
+        } else if (tableState === undefined || tableState === null) { // restore previous state when called manually
             tableState = $scope.tableState;
         }
         $scope.pagination = tableState.pagination;
         var start = $scope.pagination.start || 0;
         var number = $scope.pagination.number || 10;
-
-        $http.get(resource + buildQuerystring(number, start)).then(
-            function(response) {
-                payload = response.data;
-                $scope.backups = payload.data;
-                $scope.pagination.numberOfPages = Math.ceil(payload.total / number);
-                $scope.pagination.totalItemCount = payload.total;
-                $scope.loading = false;
-            },
-            function(reason) {
-                $scope.loading = false;
-            }
-        )
+        BackupModel.get($scope.idSearch, $scope.nodeSearch, $scope.showDeleted, number, start, refresh);
     };
-
-    var buildQuerystring = function(number, start) {
-        querystring = '?limit=' + number + '&offset=' + start + '&deleted=' + $scope.showDeleted
-        if($scope.idSearch) {
-            querystring += '&id=' + $scope.idSearch;
-        }
-        if($scope.nodeSearch) {
-            querystring += '&node=' + $scope.nodeSearch;
-        }
-        return querystring
-    }
-
+    var refresh = function() {
+        $scope.backups = BackupModel.backups;
+        $scope.pagination.numberOfPages = BackupModel.numberOfPages;
+        $scope.pagination.totalItemCount = BackupModel.totalItemCount;
+        $scope.loading = BackupModel.status.loading;
+    };
     $scope.mount = function(backup) {
         $scope.model.mounts.mount(backup)
     };
@@ -51,12 +32,11 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'SizeP
         $scope.model.mounts.unmount(backup.node, backup.id)
     };
     $scope.delete = function(backup) {
-        $http.delete(resource + '/' + backup.id).then(
-            function(response) {
-                $scope.callServer();
-            },
-            function(reason) {
-                alert("Could not remove backup, reason: " + reason.data)
+        $confirm({title: "Delete backup", text:"Are you sure you want to delete backup '" + backup.id + "'?"}).then(
+            function() {
+                BackupModel.delete(backup.id, function() {
+                    $scope.callServer();
+                });
             }
         )
     };

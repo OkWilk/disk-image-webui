@@ -1,4 +1,4 @@
-AppModule.service("MountModel", ["$log","socket", function($log, socket) {
+AppModule.service("MountModel", ["$log","socket", "toaster", function($log, socket, toaster) {
     MountModel = {
         data: null,
         status: {
@@ -30,7 +30,15 @@ AppModule.service("MountModel", ["$log","socket", function($log, socket) {
             node_id: node,
             backup_id: backupId
         }
-        socket.emit('delete:mount', payload, function(response) {})
+        socket.emit('delete:mount', payload, function(response) {
+            response = response.trim()
+            if(response === 'OK') {
+                toaster.pop('success', '', 'Backup "' + payload.backup_id + '" was successfully unmounted on ' +
+                            payload.node_id);
+            } else {
+                toaster.pop('error', '', response)
+            }
+        })
     }
 
     MountModel.mount = function(backup) {
@@ -40,8 +48,11 @@ AppModule.service("MountModel", ["$log","socket", function($log, socket) {
         }
         socket.emit('post:mount', payload, function(response) {
             response = response.trim()
-            if(response != '"OK"') {
-                alert(response);
+            if(response === "OK") {
+                toaster.pop('success', '', 'Backup "' + payload.backup_id + '" was successfully mounted on ' +
+                            payload.node_id);
+            } else {
+                toaster.pop('error', '', 'Failed to mount backup "' + payload.backup_id + '" on ' + payload.node_id, 0);
             }
         })
     }

@@ -62,7 +62,7 @@
                             <li role="menuitem"><a href="#" ng-click="delete(backup)" ng-hide="mounted">Delete</a></li>
                           </ul>
                         </div>
-                        <button type="button" class="btn btn-danger" ng-show="backup.status === 'error' && !backup.deleted" ng-click="delete(backup)">
+                        <button type="button" class="btn btn-danger" ng-show="backup.status === 'error' && !backup.deleted" ng-click="delete(backup)" confirm="Are you sure?">
                             Delete
                         </button>
                     </td>

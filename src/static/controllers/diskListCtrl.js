@@ -1,5 +1,5 @@
-AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal', '$log', 'SizeParser', 'MasterModel', 'PartitionInfo',
-    function($scope, $http, $interval, $uibModal, $log, SizeParser, MasterModel, PartitionInfo) {
+AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal', '$log', 'SizeParser', 'MasterModel',
+    'PartitionInfo', function($scope, $http, $interval, $uibModal, $log, SizeParser, MasterModel, PartitionInfo) {
 
     var init = function() {
         $scope.model = MasterModel;
