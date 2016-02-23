@@ -10,7 +10,7 @@ METRIC_LIST_SIZE = 60
 
 # Timeouts in seconds
 GET_TIMEOUT = 5
-LONG_TIMEOUT = 10
+LONG_TIMEOUT = 30
 
 # Intervals in seconds
 DISK_REFRESH_INTERVAL = 5

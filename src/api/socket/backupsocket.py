@@ -6,16 +6,16 @@ import constants
 from lib.mdbconnector import MongoConnector, to_list
 from .socketprovider import SocketProvider
 from .socketresource import SocketResource
-
+from flask.json import dumps
 socket = SocketProvider.get_socket()
 
 
 class BackupSocket(SocketResource):
     def get(self, id=None, node=None, deleted=False, limit=10, offset=0):
         if id:
-            return self._get_backup_details(id, limit, offset)
+            return dumps(self._get_backup_details(id, limit, offset))
         else:
-            return self._get_backup_list(node, deleted, limit, offset)
+            return dumps(self._get_backup_list(node, deleted, limit, offset))
 
     def _get_backup_list(self, node_id=None, show_deleted=False, limit=10, offset=0):
         with MongoConnector(constants.DB_CONFIG) as db:
@@ -51,7 +51,8 @@ class BackupSocket(SocketResource):
     def delete(self, backup_id):
         with MongoConnector(constants.DB_CONFIG) as db:
             result = db.backup.update({'id': backup_id},
-                                      {'$set': {'deleted': True, 'deletion_date': self._current_date()}})
+                                      {'$set': {'deleted': True},
+                                       '$currentDate': {'deletion_date': True}})
         if result['n']:
             return 'OK', 200
         else:

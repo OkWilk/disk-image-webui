@@ -48,7 +48,7 @@
                         <div class="label label-danger stackable-label" ng-show="backup.deleted">deleted</div>
                         <div class="label label-primary stackable-label" ng-show="mounted">mounted</div>
                     </td>
-                    <td>{{backup.creation_date}}</td>
+                    <td>{{backup.creation_date | asDate | date:'dd/MM/yyyy HH:mm'}}</td>
                     <td class="fit">
                          <div class="btn-group" uib-dropdown dropdown-append-to-body>
                           <button type="button" class="btn btn-primary" uib-dropdown-toggle ng-hide="(backup.deleted || backup.status != 'finished')">
@@ -62,7 +62,7 @@
                             <li role="menuitem"><a href="#" ng-click="delete(backup)" ng-hide="mounted">Delete</a></li>
                           </ul>
                         </div>
-                        <button type="button" class="btn btn-danger" ng-show="backup.status === 'error' && !backup.deleted" ng-click="delete(backup)" confirm="Are you sure?">
+                        <button type="button" class="btn btn-danger" ng-show="backup.status === 'error' && !backup.deleted" ng-click="delete(backup)">
                             Delete
                         </button>
                     </td>

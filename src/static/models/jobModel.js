@@ -1,4 +1,4 @@
-AppModule.service("JobModel", ["$log","socket", function($log, socket) {
+AppModule.service("JobModel", ["$log", "socket", "toaster", function($log, socket, toaster) {
     JobModel = {
         data: {},
         status: {
@@ -29,6 +29,9 @@ AppModule.service("JobModel", ["$log","socket", function($log, socket) {
     JobModel.post = function(payload) {
         socket.emit('post:job', payload, function(response) {
             $log.info(response)
+            if(response.error) {
+                toaster.pop('error', '', response.message)
+            }
         })
     }
 
