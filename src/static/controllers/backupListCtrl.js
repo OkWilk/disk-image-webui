@@ -40,6 +40,15 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'Backu
             }
         )
     };
+    $scope.undelete = function(backup) {
+        $confirm({title: "Undelete backup", text:"Are you sure you want to undelete backup '" + backup.id + "'?"}).then(
+            function() {
+                BackupModel.undelete(backup.id, function(){
+                    $scope.callServer();
+                });
+            }
+        )
+    }
     $scope.restore = function(backup) {
         var uibModalInstance = $uibModal.open({
             templateUrl: '/static/modals/restoreBackup.html',

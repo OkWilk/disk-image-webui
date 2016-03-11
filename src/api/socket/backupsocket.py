@@ -58,6 +58,15 @@ class BackupSocket(SocketResource):
         else:
             return 'Requested backup does not exist.', 404
 
+    def undelete(self, backup_id):
+        with MongoConnector(constants.DB_CONFIG) as db:
+            result = db.backup.update({'id': backup_id},
+                                      {'$set': {'deleted': False, 'deletion_date': ''}})
+        if result['n']:
+            return 'OK', 200
+        else:
+            return 'Requested backup does not exist.', 404
+
     def _current_date(self):
         return datetime.today().strftime(constants.DATE_FORMAT)
 
@@ -83,3 +92,9 @@ def delete_backup(payload):
     if 'id' not in payload:
         return 'Invalid payload, the required fields are: id.'
     return backup.delete(payload['id'])
+
+@socket.on('undelete:backup')
+def undelete_backup(payload):
+    if 'id' not in payload:
+        return 'Invalid payload, the required fields are: id.'
+    return backup.undelete(payload['id'])

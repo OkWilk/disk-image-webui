@@ -1,8 +1,8 @@
 DB_CONFIG = {
     'host': 'localhost',
     'port': 27019,
-    'user': '',
-    'password': '',
+    'user': 'diUser',
+    'password': 'diPassword',
     'database': 'DiskImage'
 }
 DATE_FORMAT = '%d/%m/%Y %H:%M:%S'

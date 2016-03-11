@@ -39,5 +39,12 @@ AppModule.service("BackupModel", ["$log","socket", function($log, socket) {
         socket.emit('delete:backup', payload, callback);
     }
 
+    BackupModel.undelete = function(backupId, callback) {
+        payload = {
+            id: backupId
+        }
+        socket.emit('undelete:backup', payload, callback);
+    }
+
     return BackupModel;
 }])

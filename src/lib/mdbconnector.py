@@ -23,6 +23,7 @@ class MongoConnector:
         Return the database cursor to the context manager.
         """
         self.client = pymongo.MongoClient()
+        self.client[self.config['database']].authenticate(self.config['user'], self.config['password'])
         return self.client[self.config['database']]
 
     def __exit__(self, exc_type, exc_value, exc_traceback):

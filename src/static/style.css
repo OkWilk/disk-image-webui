@@ -15,7 +15,6 @@ div[class^="col"] { /* Reduce gutter between columns */
     padding: 5px;
 }
 
-
 /* Classes for General use */
 .button-bar {
     margin: 0.5em 0;
@@ -39,6 +38,11 @@ div[class^="col"] { /* Reduce gutter between columns */
     border-width: 0px 1px 0px 0px;
     border-style: solid;
     border-color: light-grey;
+}
+
+/* Label Styles */
+.label-purged {
+    background-color: #990000;
 }
 
 /* Table styles */
