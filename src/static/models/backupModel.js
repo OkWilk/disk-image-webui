@@ -23,6 +23,7 @@ AppModule.service("BackupModel", ["$log","socket", function($log, socket) {
         this.status.loading = true;
         socket.emit('get:backup', payload, function(data){
             data = angular.fromJson(data);
+            $log.info(data);
             BackupModel.backups = data.data;
             BackupModel.numberOfPages = Math.ceil(data.total / limit);
             BackupModel.totalItemCount = data.total;

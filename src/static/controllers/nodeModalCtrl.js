@@ -1,4 +1,5 @@
-AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "$http", "node", function($scope, $uibModalInstance, $http, node) {
+AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "NodeModel",
+    function($scope, $uibModalInstance, node, NodeModel) {
     var init_modal = function() {
         if(node) {
             $scope.title = "Edit node";
@@ -17,14 +18,13 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "$http", "
         }
     };
     $scope.removeIgnoredDisk = function(disk) {
-        console.log('Removing: ' + disk);
-        index = $scope.node.ignored_disks.indexOf(disk);
+        var index = $scope.node.ignored_disks.indexOf(disk);
         if(index > -1) {
             $scope.node.ignored_disks.splice(index, 1);
         }
     };
     $scope.addIgnoredDisk = function() {
-        index = $scope.node.ignored_disks.indexOf($scope.ignored);
+        var index = $scope.node.ignored_disks.indexOf($scope.ignored);
         if(index < 0 && $scope.ignored) {
             $scope.node.ignored_disks.push($scope.ignored);
             $scope.ignored = "";
@@ -41,24 +41,13 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "$http", "
         $uibModalInstance.dismiss();
     };
     var updateNode = function(node) {
-        $http.put(resource + '/' + node.name, node).then(
-            function(response) {
-                $uibModalInstance.close(true);
-            },
-            function(reason) {
-                alert('Error during update, reason:' + reason);
-            }
-        );
+        NodeModel.update(node, closeModal());
     };
     var createNode = function(node) {
-        $http.post(resource, node).then(
-            function(resposne) {
-                $uibModalInstance.close(true);
-            },
-            function(reason) {
-                alert('Error during creation, reason:' + reason);
-            }
-        )
+        NodeModel.add(node, closeModal);
+    };
+    var closeModal = function() {
+        $uibModalInstance.close();
     };
 
     init_modal();

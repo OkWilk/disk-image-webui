@@ -16,7 +16,7 @@ class MetricSocket(SocketResource):
     def _broadcast_data(self):
         socket.emit('get:metric', self.metrics, broadcast=True)
 
-    def _update_data(self):
+    def update(self):
         try:
             data = self._get_data()
             self._remove_missing_nodes(data)

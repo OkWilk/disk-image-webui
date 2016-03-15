@@ -10,6 +10,8 @@ AppModule.controller("MountListCtrl", ['$scope', '$uibModal', '$log', 'MasterMod
     }
 
     $scope.unmount = function(node, mount) {
+        $log.info(node);
+        $log.info(mount);
         MasterModel.mounts.unmount(node, mount)
     }
     init();

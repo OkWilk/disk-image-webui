@@ -1,39 +1,49 @@
-AppModule.service("NodeModel", ["$log","socket", function($log, socket) {
-    BackupModel = {
-        nodes: null,
+AppModule.service("NodeModel", ["$log", "socket", "toaster", function($log, socket, toaster) {
+    var NodeModel = {
+        data: [],
         status: {
             loading: false
         }
-    }
+    };
 
-    NodeModel.get = function(id, node, deleted, limit, offset, callback) {
-        payload = {
-            deleted: deleted,
-            offset: offset,
-            limit: limit
-        };
-        if (id) {
-            payload.id = id;
-        }
-        if (node) {
-            payload.node = node;
-        }
+    NodeModel.get = function() {
         this.status.loading = true;
-        socket.emit('get:backup', payload, function(data){
-            BackupModel.backups = data.data;
-            BackupModel.numberOfPages = Math.ceil(data.total / limit);
-            BackupModel.totalItemCount = data.total;
-            BackupModel.status.loading = false;
-            callback();
+        socket.emit('get:node', {}, function(data){
+            data = angular.fromJson(data);
+            NodeModel.data = data;
+            NodeModel.status.loading = false;
         });
-    }
+    };
 
-    BackupModel.delete = function(backupId, callback) {
-        payload = {
-            id: backupId
-        }
-        socket.emit('delete:backup', payload, callback);
-    }
+    NodeModel.add = function(node, callback) {
+        this.status.loading = true;
+        socket.emit('add:node', node, function(result){
+            if(result.success) {
+                callback();
+            } else {
+                toaster.pop('warning', '', result.message)
+            }
+        })
+    };
 
-    return BackupModel;
-}])
+    NodeModel.update = function(node) {
+        this.status.loading = true;
+        socket.emit('update:node', node, function(){})
+    };
+
+    NodeModel.delete = function(nodeName) {
+        this.status.loading = true;
+        var payload = {
+            name: nodeName
+        };
+        socket.emit('delete:node', payload, function(){});
+    };
+
+    socket.on('get:node', function(data) {
+        data = angular.fromJson(data);
+        NodeModel.data = data;
+        NodeModel.status.loading = false;
+    });
+
+    return NodeModel;
+}]);

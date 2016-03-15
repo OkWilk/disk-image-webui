@@ -13,7 +13,7 @@ class MountSocket(SocketResource):
     def _broadcast_mounts(self):
         socket.emit('get:mount', self.data, broadcast=True)
 
-    def _update_data(self):
+    def update(self):
         data = self._get_data()
         if self.data != data:
             self.data = data

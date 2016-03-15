@@ -29,7 +29,4 @@ class SocketResource:
             sleep(self.interval)
 
     def update(self):
-        self._update_data()
-
-    def _update_data(self):
         pass

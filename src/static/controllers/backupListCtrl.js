@@ -1,6 +1,6 @@
 AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
-    '$uibModal', '$log', 'toaster', '$confirm',
-    function($scope, $http, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, toaster, $confirm){
+    '$uibModal', '$log', '$confirm',
+    function($scope, $http, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, $confirm){
 
     var init = function() {
         $scope.model = MasterModel;
