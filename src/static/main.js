@@ -1,5 +1,5 @@
 var AppModule = angular.module("com.itcarlow.okwilk.diskimage", ['ui.bootstrap', 'chart.js', 'smart-table', 'toaster',
-    'angular-confirm']);
+    'angular-confirm', 'ngMessages']);
 
 AppModule.filter('unsafe', ['$sce', function ($sce) {
     return function (val) {

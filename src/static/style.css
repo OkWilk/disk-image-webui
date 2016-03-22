@@ -66,6 +66,10 @@ div[class^="col"] { /* Reduce gutter between columns */
     display: inline-block;
     padding: 0.25em 1em;
 }
+.clickable-addon.success {
+    background: #428bca; /* bootstrap-success colour */
+    color: #fff;
+}
 .clickable-addon:hover {
     cursor: pointer;
 }

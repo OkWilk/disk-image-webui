@@ -39,7 +39,7 @@
                     <tr>
                         <td colspan="3">
                             <div ng-messages="form.disk.$error">
-                                <div ng-message="required" class="text-danger">Please select a target disk.</div>
+                                <div ng-message="required" class="text-danger">Select a target disk.</div>
                             </div>
                         </td>
                     </tr>
@@ -78,7 +78,7 @@
 </div>
 <div class="modal-footer">
     <div class="col-sm-12 text-right">
-        <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!form.$valid">Run</button>
+        <button type="submit" class="btn btn-primary" ng-click="ok(form.$valid)" ng-disabled="!form.$valid">Run</button>
         <button class="btn btn-default" ng-click="cancel()">Cancel</button>
     </div>
 </div>

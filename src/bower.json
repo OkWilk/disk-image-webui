@@ -1,0 +1,23 @@
+{
+  "name": "DiskImage-WebUI",
+  "homepage": "https://github.com/OkWilk/disk-image-webui",
+  "authors": [
+    "Oktawiusz Wilk <okwilk@gmail.com>"
+  ],
+  "description": "Web based user interface for DiskImage project.",
+  "main": "server.py",
+  "moduleType": [],
+  "keywords": [
+    "DiskImage",
+    "Backup"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/",
+    "test",
+    "tests"
+  ]
+}

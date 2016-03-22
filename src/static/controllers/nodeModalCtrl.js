@@ -1,9 +1,10 @@
-AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "NodeModel",
-    function($scope, $uibModalInstance, node, NodeModel) {
+AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "NodeModel", "toaster",
+    function($scope, $uibModalInstance, node, NodeModel, toaster) {
     var init_modal = function() {
         if(node) {
             $scope.title = "Edit node";
             $scope.node = node;
+            $scope.showErrors = false;
             $scope.edit = true;
         } else {
             $scope.title = "Add node";
@@ -23,18 +24,30 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "N
             $scope.node.ignored_disks.splice(index, 1);
         }
     };
-    $scope.addIgnoredDisk = function() {
+    $scope.canAddDiskToIgnoreList = function() {
         var index = $scope.node.ignored_disks.indexOf($scope.ignored);
         if(index < 0 && $scope.ignored) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    $scope.addIgnoredDisk = function() {
+        if($scope.canAddDiskToIgnoreList()) {
             $scope.node.ignored_disks.push($scope.ignored);
             $scope.ignored = "";
         }
     };
-    $scope.ok = function() {
-        if($scope.edit) {
-            updateNode($scope.node);
+    $scope.ok = function(valid) {
+        if(valid) {
+            if ($scope.edit) {
+                updateNode($scope.node);
+            } else {
+                createNode($scope.node);
+            }
         } else {
-            createNode($scope.node);
+            $scope.showErrors = true;
+            toaster.pop('warning','Invalid inputs detected','Fix all errors and try again.')
         }
     };
     $scope.cancel = function() {

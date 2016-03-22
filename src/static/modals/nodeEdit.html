@@ -3,32 +3,54 @@
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
 </div>
 <div class="modal-body">
-    <form class="form-horizontal" role="form">
+    <form name="form" class="form-horizontal" role="form" novalidate>
         <div class="form-group">
-            <label class="control-label col-sm-3" for="name">Name:</label>
+            <label class="control-label col-sm-3" for="node_name">Name:</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="name" placeholder="Enter name" ng-model="node.name" ng-disabled="edit" required>
+                <input type="text" class="form-control" id="node_name" name="node_name" placeholder="Node name"
+                       ng-model="node.name" ng-minlength="3" ng-maxlength="20" ng-disabled="edit" required>
+            </div>
+            <div class="col-sm-offset-3 col-sm-9 text-danger" ng-messages="form.node_name.$error"
+                 ng-show="form.node_name.$dirty || showErrors" role="alert">
+                <div ng-message="required">Enter the node name.</div>
+                <div ng-message="minlength">The node name is too short.</div>
+                <div ng-message="maxlength">The node name is too long.</div>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3" for="address">Address:</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="address" placeholder="192.168.1.100" ng-model="node.address" required>
+                <input type="text" class="form-control" name="address" id="address" placeholder="IP address or hostname"
+                       ng-model="node.address" required>
+            </div>
+            <div class="col-sm-offset-3 col-sm-9 text-danger" ng-messages="form.address.$error"
+                 ng-show="form.address.$dirty || showErrors" role="alert">
+                <div ng-message="required">Enter the address of the node.</div>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3" for="port">Port:</label>
             <div class="col-sm-9">
-                <input type="number" class="form-control" id="port" placeholder="5000" ng-model="node.port" required>
+                <input type="number" min="1" max="65535" step="1" class="form-control" name="port" id="port"
+                       placeholder="5000" ng-model="node.port" ng-pattern="'\\d+'" required>
+            </div>
+            <div class="col-sm-offset-3 col-sm-9 text-danger" ng-messages="form.port.$error"
+                 ng-show="form.port.$dirty || showErrors" role="alert">
+                <div ng-message="required">Enter the port of the node.</div>
+                <div ng-message="min">The entered value is not a valid port number.</div>
+                <div ng-message="max">The entered value is not a valid port number.</div>
+                <div ng-message="pattern">The entered value is not a valid port number.</div>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3" for="ignored">Ignored disks:</label>
             <div class="col-sm-9">
-                <div ng-repeat="disk in node.ignored_disks" class="label label-default stackable-label clickable-addon" ng-click="removeIgnoredDisk(disk)">{{disk}} <i class="glyphicon glyphicon-remove"></i></div>
+                <div ng-repeat="disk in node.ignored_disks" class="label label-default stackable-label clickable-addon"
+                     ng-click="removeIgnoredDisk(disk)">{{disk}} <i class="glyphicon glyphicon-remove"></i></div>
                 <div class="input-group">
                     <input type="text" class="form-control" id="ignored" placeholder="sda" ng-model="ignored">
-                    <div class="input-group-addon clickable-addon" ng-click="addIgnoredDisk()">Add</div>
+                    <div class="input-group-addon clickable-addon" ng-class="canAddDiskToIgnoreList() ? 'success' : ''"
+                         ng-click="addIgnoredDisk()">Add</div>
                 </div>
             </div>
         </div>
@@ -44,7 +66,7 @@
 </div>
 <div class="modal-footer">
     <div class="col-sm-12 text-right">
-        <button type="submit" class="btn btn-primary" ng-click="ok()">Run</button>
+        <button type="submit" class="btn btn-primary" ng-click="ok(form.$valid)">Run</button>
         <button type="submit" class="btn btn-default" ng-click="cancel()">Cancel</button>
     </div>
 </div>
