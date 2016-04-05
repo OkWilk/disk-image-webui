@@ -37,7 +37,5 @@ AppModule.service("JobModel", ["$log", "socket", "toaster", function($log, socke
         })
     };
 
-    JobModel.get();
-
     return JobModel;
 }]);

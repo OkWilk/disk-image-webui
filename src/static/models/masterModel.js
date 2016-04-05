@@ -10,9 +10,9 @@ AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", "Metric
     };
 
     MasterModel.update = function() {
+        MasterModel.disks.get();
         MasterModel.jobs.get();
         MasterModel.mounts.get();
-        MasterModel.disks.get();
         MasterModel.metrics.get();
         MasterModel.nodes.get();
     };
@@ -32,5 +32,6 @@ AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", "Metric
         }
     };
 
+    MasterModel.update();
     return MasterModel;
 }]);

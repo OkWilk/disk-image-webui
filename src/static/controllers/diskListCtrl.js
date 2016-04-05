@@ -4,7 +4,6 @@ AppModule.controller("DiskListCtrl", ['$scope', '$http', '$interval', '$uibModal
     var init = function() {
         $scope.model = MasterModel;
         $scope.parseSize = SizeParser.parse;
-        $scope.update()
     }
     $scope.update = function() {
         MasterModel.disks.get();

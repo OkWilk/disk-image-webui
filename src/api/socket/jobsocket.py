@@ -16,7 +16,8 @@ class JobSocket(SocketResource):
     def update(self):
         data = self._get_data()
         if self.data != data:
-            self.data = data
+            with self._lock:
+                self.data = data
             self._broadcast_jobs()
 
     def _get_data(self):
@@ -63,7 +64,7 @@ job.start()
 @socket.on('get:job')
 def get_disk(payload):
     socket.emit('get:job', job.data)
-    job.update()
+    job.background_update()
     return "OK"
 
 

@@ -3,7 +3,6 @@ AppModule.controller("MountListCtrl", ['$scope', '$uibModal', '$log', 'MasterMod
 
     var init = function() {
         $scope.model = MasterModel;
-        $scope.update()
     }
     $scope.update = function() {
         MasterModel.mounts.get();

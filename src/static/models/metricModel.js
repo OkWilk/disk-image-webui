@@ -32,7 +32,5 @@ AppModule.service("MetricModel", ["$log","socket", function($log, socket) {
         MetricModel.status.loading = false;
     });
 
-    MetricModel.get();
-
     return MetricModel;
-}])
+}]);

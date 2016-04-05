@@ -6,6 +6,16 @@ AppModule.service("NodeModel", ["$log", "socket", "toaster", function($log, sock
         }
     };
 
+    NodeModel.getNodeById = function(node_id) {
+        var selectedNode = null;
+        angular.forEach(NodeModel.data, function(node, key) {
+            if(node.name == node_id) {
+              selectedNode =  node;
+            }
+        });
+        return selectedNode;
+    };
+
     NodeModel.get = function() {
         this.status.loading = true;
         socket.emit('get:node', {}, function(data){

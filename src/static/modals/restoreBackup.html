@@ -51,7 +51,7 @@
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="disk" name="disk" ng-model="targetDisk" disabled="true" required>
             </div>
-            <div class="col-sm-offset-3 col-sm-8 text-danger" ng-show="(selectedDisk.size < backup.disk_size) && restoration.space_check" role="alert">
+            <div class="col-sm-offset-3 col-sm-8 text-danger" ng-show="selectedDisk && !isSelectedDiskLargeEnough() && restoration.space_check" role="alert">
                 <div>The selected disk is smaller than the backup.</div>
             </div>
         </div>

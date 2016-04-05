@@ -1,6 +1,6 @@
-AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
-    '$uibModal', '$log', '$confirm',
-    function($scope, $http, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, $confirm){
+AppModule.controller("BackupListCtrl", ['$scope', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
+    '$uibModal', '$log', '$confirm', 'toaster',
+    function($scope, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, $confirm, toaster){
 
     var init = function() {
         $scope.model = MasterModel;
@@ -26,7 +26,11 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'Backu
         $scope.loading = BackupModel.status.loading;
     };
     $scope.mount = function(backup) {
-        $scope.model.mounts.mount(backup)
+        if($scope.model.nodes.getNodeById(backup.node).enabled){
+            $scope.model.mounts.mount(backup)
+        } else {
+            toaster.pop('warning', '', 'Cannot mount backup "' + backup.id + '" as the node "' + backup.node + '" is disabled.');
+        }
     };
     $scope.unmount = function(backup) {
         $scope.model.mounts.unmount(backup.node, backup.id)
@@ -48,25 +52,30 @@ AppModule.controller("BackupListCtrl", ['$scope', '$http', 'MasterModel', 'Backu
                 });
             }
         )
-    }
+    };
     $scope.restore = function(backup) {
-        var uibModalInstance = $uibModal.open({
-            templateUrl: '/static/modals/restoreBackup.html',
-            controller: 'RestoreBackupModalCtrl',
-            backdrop: 'static',
-            resolve: {
-                backup: function() {
-                    return angular.copy(backup);
+        if($scope.model.nodes.getNodeById(backup.node).enabled) {
+            var uibModalInstance = $uibModal.open({
+                templateUrl: '/static/modals/restoreBackup.html',
+                controller: 'RestoreBackupModalCtrl',
+                backdrop: 'static',
+                resolve: {
+                    backup: function () {
+                        return angular.copy(backup);
+                    }
                 }
-            }
-        });
-        uibModalInstance.result.then(
-            function(result) {
-                MasterModel.jobs.post(result)
-                $log.info(result)
-            },
-            function() { }
-        );
-    }
+            });
+            uibModalInstance.result.then(
+                function (result) {
+                    MasterModel.jobs.post(result);
+                    $log.info(result)
+                },
+                function () {
+                }
+            );
+        } else {
+            toaster.pop('warning', '', 'Cannot restore backup "' + backup.id + '" as the node "' + backup.node + '" is disabled.');
+        }
+    };
     init();
-}])
+}]);

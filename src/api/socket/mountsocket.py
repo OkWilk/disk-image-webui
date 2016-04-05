@@ -16,7 +16,8 @@ class MountSocket(SocketResource):
     def update(self):
         data = self._get_data()
         if self.data != data:
-            self.data = data
+            with self._lock:
+                self.data = data
             self._broadcast_mounts()
 
     def _get_data(self):
@@ -34,17 +35,18 @@ class MountSocket(SocketResource):
     def mount(self, node_id, payload):
         try:
             node = NodeConfig.get_node(node_id)
-            r = requests.post(NodeConfig.get_node_url(node) + constants.MOUNT_RESOURCE, json=payload)
+            r = requests.post(NodeConfig.get_node_url(node) + constants.MOUNT_RESOURCE, json=payload,
+                              timeout=constants.POST_TIMEOUT)
             return r.json()
         except Exception as e:
             self._logger.warn("Exception while mounting backup. Cause: " + str(e))
-            return 'Invalid resource requested.', 404
+            return 'Could not mount resource at this time.', 400
 
     def unmount(self, node_id, backup_id):
         try:
             node = NodeConfig.get_node(node_id)
             r = requests.delete(NodeConfig.get_node_url(node) + constants.MOUNT_RESOURCE + '/' + backup_id,
-                                timeout=constants.LONG_TIMEOUT)
+                                timeout=constants.POST_TIMEOUT)
             return r.json()
         except Exception as e:
             self._logger.warn("Exception while unmounting backup. Cause: " + str(e))
@@ -57,7 +59,7 @@ mount.start()
 @socket.on('get:mount')
 def get_mount(message):
     socket.emit('get:mount', mount.data)
-    mount.update()
+    mount.background_update()
     return "OK"
 
 
@@ -66,7 +68,7 @@ def delete_mount(payload):
     if 'node_id' in payload and 'backup_id' in payload:
         result = mount.unmount(payload['node_id'], payload['backup_id'])
         if 'OK' in result:
-            mount.update()
+            mount.background_update()
         return result
     return "Missing node_id or backup_id in payload.", 400
 
@@ -76,6 +78,6 @@ def create_mount(payload):
     if 'node_id' in payload and 'backup_id' in payload:
         result = mount.mount(payload['node_id'], payload)
         if 'OK' in result:
-            mount.update()
+            mount.background_update()
         return result
     return "Missing node_id or backup_id in payload.", 400

@@ -52,7 +52,7 @@ AppModule.service("MountModel", ["$log","socket", "toaster", function($log, sock
                 toaster.pop('success', '', 'Backup "' + payload.backup_id + '" was successfully mounted on ' +
                             payload.node_id);
             } else {
-                toaster.pop('error', '', 'Failed to mount backup "' + payload.backup_id + '" on ' + payload.node_id, 0);
+                toaster.pop('error', '', response, 0);
             }
         })
     };
@@ -65,8 +65,6 @@ AppModule.service("MountModel", ["$log","socket", "toaster", function($log, sock
         MountModel.data = data;
         MountModel.status.loading = false;
     });
-
-    MountModel.get();
 
     return MountModel;
 }]);

@@ -3,9 +3,8 @@ AppModule.controller("NodesListCtrl", ['$scope', '$http', '$uibModal', 'MasterMo
 
     var init = function() {
         $scope.model = MasterModel;
-        $scope.refresh();
     };
-    $scope.refresh = function() {
+    $scope.update = function() {
         $scope.model.nodes.get()
     };
     $scope.delete = function(node) {
@@ -24,7 +23,7 @@ AppModule.controller("NodesListCtrl", ['$scope', '$http', '$uibModal', 'MasterMo
         });
         uibModalInstance.result.then(
             function() {
-                $scope.refresh();
+                $scope.update();
             },
             function() { }
         );
@@ -41,7 +40,7 @@ AppModule.controller("NodesListCtrl", ['$scope', '$http', '$uibModal', 'MasterMo
         });
         uibModalInstance.result.then(
             function() {
-                $scope.refresh();
+                $scope.update();
             }
         );
     };

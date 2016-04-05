@@ -47,7 +47,5 @@ AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval'
                 }
             });
         };
-
-        $scope.update();
     }
 ]);

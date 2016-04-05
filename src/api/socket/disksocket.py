@@ -16,7 +16,8 @@ class DiskSocket(SocketResource):
     def update(self):
         data = self._get_data()
         if self.data != data:
-            self.data = data
+            with self._lock:
+                self.data = data
             self._broadcast_disks()
 
     def _get_data(self):
@@ -46,5 +47,5 @@ disk.start()
 @socket.on('get:disk')
 def get_disk(payload):
     socket.emit('get:disk', disk.data)
-    disk.update()
+    disk.background_update()
     return "OK"

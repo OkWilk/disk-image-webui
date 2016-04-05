@@ -36,12 +36,25 @@ AppModule.controller('StatsCtrl', ['$scope', '$log', '$interval', 'MasterModel',
             ramUtil[index] = $scope.model.metrics.data[key]['RAM_Utilisation'];
             diskUtil[index] = $scope.model.metrics.data[key]['DiskSpace'];
             diskIOUtil[index] = $scope.model.metrics.data[key]['Disk_IO_Utilisation'];
-        })
+        });
+        adjustLabels(cpuUtil[0]);
         $scope.cpuUtil = cpuUtil;
         $scope.ramUtil = ramUtil;
         $scope.diskUtil = diskUtil;
         $scope.diskIOUtil = diskIOUtil
-    }
+    };
 
+    var adjustLabels = function(data) {
+        var difference = data.length - $scope.labels.length;
+        if(difference > 0) {
+            for(i=0; i < difference; ++i) {
+                $scope.labels.push("");
+            }
+        } else if(difference < 0) {
+            for(i=difference; i < 0; ++i) {
+                $scope.labels.pop();
+            }
+        }
+    };
     init();
-}])
+}]);

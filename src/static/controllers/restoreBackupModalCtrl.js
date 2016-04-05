@@ -41,7 +41,9 @@ AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalIns
     $scope.parseSize = SizeParser.parse;
     $scope.partitionInfo = PartitionInfo.getInfo;
     $scope.isDiskBusy = MasterModel.isDiskBusy;
-
+    $scope.isSelectedDiskLargeEnough = function() {
+        return parseInt($scope.selectedDisk.size) >= parseInt($scope.backup.disk_size);
+    };
     $scope.cancel = function() {
         $uibModalInstance.dismiss();
     };
