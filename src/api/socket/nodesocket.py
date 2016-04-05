@@ -46,7 +46,7 @@ class NodeSocket(SocketResource, Observable):
             self.update()
             return {'success': True, 'message': 'OK'}
         else:
-            return 'Requested node does not exist.', 404
+            return {'success': False, 'message': 'Requested node does not exist.'}
 
 
 node = NodeSocket()

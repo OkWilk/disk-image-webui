@@ -6,12 +6,9 @@ import constants
 class _NodeConfig(Observer):
     def __init__(self):
         self.nodes = []
-        self.refresh()
+        self.update()
 
     def update(self, *args, **kwargs):
-        self.refresh()
-
-    def refresh(self):
         with MongoConnector(constants.DB_CONFIG) as db:
             data = db.nodes.find()
         self.nodes = to_list(data)

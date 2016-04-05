@@ -18,6 +18,16 @@
     "bower_components",
     "static/",
     "test",
-    "tests"
-  ]
+    "tests",
+    "static/bower_components/"
+  ],
+  "dependencies": {
+    "AngularJS-Toaster": "angularjs-toaster#~1.0.0",
+    "angular-bootstrap": "~0.14.3",
+    "angular-messages": "^1.5.0",
+    "angular-chart.js": "~0.8.8",
+    "angular-confirm-modal": "^1.2.3",
+    "angular-smart-table": "~2.1.6",
+    "bootstrap": "~3.3.6"
+  }
 }

@@ -7,6 +7,7 @@ AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalIns
         $scope.title = "Restore Backup";
         $scope.model = MasterModel;
         $scope.backup = backup;
+        $scope.selectedDisk = null;
         $scope.targetDisk = "";
         $scope.restoration = {
             disk: "",
@@ -19,11 +20,12 @@ AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalIns
             crc_check: true,
             force: false
         }
-    }
+    };
 
     $scope.selectDisk = function(node, disk) {
         $scope.restoration.disk = disk.name;
         $scope.targetDisk = $scope.getSelectedDisk();
+        $scope.selectedDisk = disk;
     };
     $scope.isSelectedDisk = function(node, disk) {
         return disk.name + " @ " + node == $scope.getSelectedDisk();

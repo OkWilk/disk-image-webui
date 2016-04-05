@@ -67,9 +67,6 @@ class BackupSocket(SocketResource):
         else:
             return 'Requested backup does not exist.', 404
 
-    def _current_date(self):
-        return datetime.today().strftime(constants.DATE_FORMAT)
-
 
 backup = BackupSocket()
 

@@ -1,15 +1,15 @@
 AppModule.service("BackupModel", ["$log","socket", function($log, socket) {
-    BackupModel = {
+    var BackupModel = {
         backups: null,
         numberOfPages: 0,
         totalItemCount: 0,
         status: {
             loading: false
         }
-    }
+    };
 
     BackupModel.get = function(id, node, deleted, limit, offset, callback) {
-        payload = {
+        var payload = {
             deleted: deleted,
             offset: offset,
             limit: limit
@@ -31,21 +31,21 @@ AppModule.service("BackupModel", ["$log","socket", function($log, socket) {
             callback();
             $log.info(data.limit)
         });
-    }
+    };
 
     BackupModel.delete = function(backupId, callback) {
-        payload = {
+        var payload = {
             id: backupId
-        }
+        };
         socket.emit('delete:backup', payload, callback);
-    }
+    };
 
     BackupModel.undelete = function(backupId, callback) {
-        payload = {
+        var payload = {
             id: backupId
-        }
+        };
         socket.emit('undelete:backup', payload, callback);
-    }
+    };
 
     return BackupModel;
-}])
+}]);

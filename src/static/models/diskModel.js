@@ -1,19 +1,19 @@
 AppModule.service("DiskModel", ["$log","socket", function($log, socket) {
-    DiskModel = {
+    var DiskModel = {
         data: null,
         status: {
             loading: false
         }
-    }
+    };
 
     DiskModel.get = function() {
         this.status.loading = true;
         socket.emit('get:disk', {}, function(){});
-    }
+    };
 
     DiskModel.getDisk = function(node, diskName) {
-        disks = DiskModel[node];
-        for(disk in disks) {
+        var disks = DiskModel[node];
+        for(var disk in disks) {
             if(disk.name == diskName){
                 return disk;
             }
@@ -27,4 +27,4 @@ AppModule.service("DiskModel", ["$log","socket", function($log, socket) {
     });
 
     return DiskModel;
-}])
+}]);

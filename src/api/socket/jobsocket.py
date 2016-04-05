@@ -38,10 +38,12 @@ class JobSocket(SocketResource):
                                 timeout=constants.LONG_TIMEOUT)
             if r.status_code == 200:
                 self.update()
-            return r.text, r.status_code
+                return {'success': True, 'message': 'OK'}
+            else:
+                return {'success': False, 'message': str(r.text).strip().strip('"')}
         except Exception as e:
             self._logger.warning("Exception while removing job. Cause: " + str(e))
-            return "Invalid resource requested.", 400
+            return {'success': False, 'message': str(e)}
 
     def create(self, node_id, payload):
         try:
@@ -51,7 +53,7 @@ class JobSocket(SocketResource):
             return r.text
         except Exception as e:
             self._logger.warning("Exception while adding a new job. Cause: " + str(e))
-            return {'message': r.text, 'error': r.status_code}
+            return {'success': False, 'message': str(e)}
 
 
 job = JobSocket(constants.JOB_REFRESH_INTERVAL)
@@ -67,8 +69,8 @@ def get_disk(payload):
 
 @socket.on('delete:job')
 def del_job(payload):
-    if 'node_id' in payload and 'job_id' in payload:
-        return job.delete(payload['node_id'], payload['job_id'])
+    if 'node' in payload and 'job_id' in payload:
+        return job.delete(payload['node'], payload['job_id'])
 
 
 @socket.on('post:job')
