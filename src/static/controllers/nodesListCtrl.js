@@ -1,5 +1,5 @@
-AppModule.controller("NodesListCtrl", ['$scope', '$http', '$uibModal', 'MasterModel',
-    function($scope, $http, $uibModal, MasterModel){
+AppModule.controller("NodesListCtrl", ['$scope', '$uibModal', 'MasterModel',
+    function($scope, $uibModal, MasterModel){
 
     var init = function() {
         $scope.model = MasterModel;

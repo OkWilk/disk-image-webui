@@ -1,9 +1,9 @@
-AppModule.controller('StatsCtrl', ['$scope', '$log', '$interval', 'MasterModel', function($scope, $log, $interval, MasterModel) {
+AppModule.controller('StatsCtrl', ['$scope', '$interval', 'MasterModel', function($scope, $interval, MasterModel) {
 
     var init = function() {
         initCharts();
         MasterModel.metrics.addObserverCallback(updateData);
-    }
+    };
 
     var initCharts = function() {
         $scope.model = MasterModel;
@@ -20,9 +20,6 @@ AppModule.controller('StatsCtrl', ['$scope', '$log', '$interval', 'MasterModel',
             scaleStepWidth: 20,
             scaleStartValue: 0
         };
-        for(i = 0; i < 60; ++i){
-            $scope.labels.push("");
-        }
     };
 
     var updateData = function() {

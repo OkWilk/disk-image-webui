@@ -1,14 +1,13 @@
-AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval', '$log', 'MasterModel',
-    function($scope, $http, $uibModal, $interval, $log, MasterModel) {
+AppModule.controller("JobListCtrl", ['$scope', '$uibModal', 'MasterModel', function($scope, $uibModal, MasterModel) {
 
-        $scope.model = MasterModel
+        $scope.model = MasterModel;
 
         $scope.update = function() {
             MasterModel.jobs.get()
         };
         $scope.getProgressValue = function(job) {
             if(job.partitions.length > 0){
-                progress = 0
+                var progress = 0
                 angular.forEach(job.partitions, function(partition) {
                     progress += parseInt(partition.completed);
                 });
@@ -16,7 +15,7 @@ AppModule.controller("JobListCtrl", ['$scope', '$http', '$uibModal', '$interval'
                 return Math.round(progress);
             }
             return 0;
-        }
+        };
         $scope.getProgressType = function(type) {
             switch (type) {
                 case 'finished':

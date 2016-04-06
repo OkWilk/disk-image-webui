@@ -14,7 +14,7 @@ AppModule.service('SizeParser', function() {
     };
 
     this.getSubjectivePercentage = function(size, total) {
-        percentage = Math.floor((size / total) * 100);
+        var percentage = Math.floor((size / total) * 100);
         if(percentage < 1) {
             return 1 + "%";
         } else if (percentage > 25) {
@@ -22,7 +22,7 @@ AppModule.service('SizeParser', function() {
         } else {
             return percentage + "%";
         }
-    }
+    };
 
     return this;
 });
@@ -30,15 +30,15 @@ AppModule.service('SizeParser', function() {
 AppModule.service('PartitionInfo', ['SizeParser', function(SizeParser) {
 
     this.getInfo = function(partition) {
-        info = "<p><b>File-system:</b> "
+        var info = "<p><b>File-system:</b> ";
         if (partition.fs != "") {
             info += partition.fs
         } else {
             info += "raw"
         }
-        info += "<br/><b>Size: </b>" + SizeParser.parse(partition.size) + "</p>"
+        info += "<br/><b>Size: </b>" + SizeParser.parse(partition.size) + "</p>";
         return info
-    }
+    };
 
     return this;
 }]);

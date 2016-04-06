@@ -1,6 +1,6 @@
 AppModule.controller("BackupListCtrl", ['$scope', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
-    '$uibModal', '$log', '$confirm', 'toaster',
-    function($scope, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $log, $confirm, toaster){
+    '$uibModal', '$confirm', 'toaster',
+    function($scope, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $confirm, toaster) {
 
     var init = function() {
         $scope.model = MasterModel;
@@ -68,7 +68,6 @@ AppModule.controller("BackupListCtrl", ['$scope', 'MasterModel', 'BackupModel', 
             uibModalInstance.result.then(
                 function (result) {
                     MasterModel.jobs.post(result);
-                    $log.info(result)
                 },
                 function () {
                 }

@@ -1,4 +1,4 @@
-AppModule.service("JobModel", ["$log", "socket", "toaster", function($log, socket, toaster) {
+AppModule.service("JobModel", ["socket", "toaster", function(socket, toaster) {
     var JobModel = {
         data: {},
         status: {
@@ -6,8 +6,18 @@ AppModule.service("JobModel", ["$log", "socket", "toaster", function($log, socke
         }
     };
 
+    JobModel.getJobById = function(node_id, job_id) {
+        var selected_job = null;
+        angular.forEach(JobModel.data[node_id], function(job, key) {
+            if(job.id == job_id) {
+                selected_job = job;
+            }
+        });
+        return selected_job;
+    };
+
     JobModel.get = function() {
-        status.loading = true;
+        JobModel.status.loading = true;
         socket.emit('get:job', {}, function(){});
     };
 
@@ -28,11 +38,14 @@ AppModule.service("JobModel", ["$log", "socket", "toaster", function($log, socke
         });
     };
 
-    JobModel.post = function(payload) {
+    JobModel.post = function(payload, callback) {
         socket.emit('post:job', payload, function(response) {
-            $log.info(response);
-            if(response.f) {
+            if(!response.success) {
                 toaster.pop('error', '', response.message)
+            } else {
+                if(callback) {
+                    callback();
+                }
             }
         })
     };

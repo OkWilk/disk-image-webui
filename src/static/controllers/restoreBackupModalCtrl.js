@@ -1,6 +1,6 @@
-AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalInstance', 'MasterModel', 'backup', '$log',
+AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$uibModalInstance', 'MasterModel', 'backup',
     'SizeParser', 'PartitionInfo', '$confirm',
-    function($scope, $http, $uibModalInstance, MasterModel, backup, $log, SizeParser, PartitionInfo, $confirm) {
+    function($scope, $uibModalInstance, MasterModel, backup, SizeParser, PartitionInfo, $confirm) {
 
     var initModal = function() {
         MasterModel.update();
@@ -58,4 +58,4 @@ AppModule.controller("RestoreBackupModalCtrl", ['$scope', '$http', '$uibModalIns
     };
 
     initModal();
-}])
+}]);

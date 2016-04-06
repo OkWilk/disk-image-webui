@@ -1,5 +1,5 @@
-AppModule.controller("CreateBackupModalCtrl", ['$scope', '$http', '$uibModalInstance', 'node', 'disk', 'toaster',
-function($scope, $http, $uibModalInstance, node, disk, toaster) {
+AppModule.controller("CreateBackupModalCtrl", ['$scope', '$uibModalInstance', 'node', 'disk', 'toaster', 'MasterModel',
+function($scope, $uibModalInstance, node, disk, toaster, MasterModel) {
     var initModal = function() {
         $scope.title = "Create Backup";
         $scope.showErrors = false;
@@ -24,11 +24,14 @@ function($scope, $http, $uibModalInstance, node, disk, toaster) {
     };
     $scope.ok = function(valid) {
         if(valid) {
-            $uibModalInstance.close($scope.backup)
+            MasterModel.jobs.post($scope.backup, close);
         } else {
             $scope.showErrors = true;
             toaster.pop('warning','Invalid inputs detected','Fix all errors and try again.')
         }
+    };
+    var close = function() {
+        $uibModalInstance.close();
     };
     initModal();
 }]);

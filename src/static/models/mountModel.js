@@ -1,4 +1,4 @@
-AppModule.service("MountModel", ["$log","socket", "toaster", function($log, socket, toaster) {
+AppModule.service("MountModel", ["socket", "toaster", function( socket, toaster) {
     var MountModel = {
         data: null,
         status: {
@@ -15,7 +15,7 @@ AppModule.service("MountModel", ["$log","socket", "toaster", function($log, sock
         if(MountModel.data) {
             var mounts = MountModel.data[node];
             if(mounts) {
-                for(i in mounts) {
+                for(var i in mounts) {
                     if(mounts[i].id === mountId) {
                         return mounts[i];
                     }

@@ -14,7 +14,7 @@ angular.module("template/popover/popover.html", []).run(["$templateCache", funct
       "\n" +
       "  <div class=\"popover-inner\">\n" +
       "      <h3 class=\"popover-title\" ng-bind-html=\"title | unsafe\" ng-show=\"title\"></h3>\n" +
-      "      <div class=\"popover-content\"ng-bind-html=\"content | unsafe\"></div>\n" +
+      "      <div class=\"popover-content\" ng-bind-html=\"content | unsafe\"></div>\n" +
       "  </div>\n" +
       "</div>\n" +
       "");

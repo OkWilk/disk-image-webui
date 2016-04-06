@@ -1,4 +1,4 @@
-AppModule.service("NodeModel", ["$log", "socket", "toaster", function($log, socket, toaster) {
+AppModule.service("NodeModel", ["socket", "toaster", function(socket, toaster) {
     var NodeModel = {
         data: [],
         status: {

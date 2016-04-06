@@ -1,4 +1,4 @@
-AppModule.service("DiskModel", ["$log","socket", function($log, socket) {
+AppModule.service("DiskModel", ["socket", function(socket) {
     var DiskModel = {
         data: null,
         status: {

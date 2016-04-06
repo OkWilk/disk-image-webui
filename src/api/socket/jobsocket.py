@@ -51,10 +51,10 @@ class JobSocket(SocketResource):
             r = requests.post(NodeConfig.get_node_url(node_id) + constants.JOB_RESOURCE, json=payload,
                               timeout=constants.LONG_TIMEOUT)
             r.raise_for_status()
-            return r.text
+            return {'success': True, 'message': str(r.text).strip().strip('"')}
         except Exception as e:
             self._logger.warning("Exception while adding a new job. Cause: " + str(e))
-            return {'success': False, 'message': str(e)}
+            return {'success': False, 'message': str(r.text).strip().strip('"')}
 
 
 job = JobSocket(constants.JOB_REFRESH_INTERVAL)

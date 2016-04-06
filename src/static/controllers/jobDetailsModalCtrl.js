@@ -1,9 +1,14 @@
-AppModule.controller("JobDetailsModalCtrl", ['$scope', '$uibModalInstance', 'node', 'job',
-    function($scope, $uibModalInstance, node, job) {
+AppModule.controller("JobDetailsModalCtrl", ['$scope', '$uibModalInstance', 'node', 'job', 'MasterModel',
+    function($scope, $uibModalInstance, node, job, MasterModel) {
         var initModal = function() {
-            $scope.node = node;
-            $scope.job = job;
-        }
+            $scope.model = MasterModel;
+            $scope.nodeId = node;
+            $scope.jobId = job.id;
+        };
+
+        $scope.job = function() {
+            return $scope.model.jobs.getJobById($scope.nodeId, $scope.jobId);
+        };
 
         $scope.getProgressType = function(type) {
             switch (type) {
@@ -20,7 +25,8 @@ AppModule.controller("JobDetailsModalCtrl", ['$scope', '$uibModalInstance', 'nod
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss();
-        }
+        };
+
         initModal();
     }
 ]);
