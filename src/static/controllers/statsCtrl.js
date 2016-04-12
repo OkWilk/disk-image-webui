@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller('StatsCtrl', ['$scope', '$interval', 'MasterModel', function($scope, $interval, MasterModel) {
 
     var init = function() {

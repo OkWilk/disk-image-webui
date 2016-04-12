@@ -1,3 +1,9 @@
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
+
 from flask.json import dumps
 
 import constants
@@ -5,10 +11,16 @@ from lib.mdbconnector import MongoConnector, to_list
 from lib.observer import Observable
 from .socketprovider import SocketProvider
 from .socketresource import SocketResource
+
 socket = SocketProvider.get_socket()
 
 
 class NodeSocket(SocketResource, Observable):
+    """
+    The socket implementation for node management, which allows retrieving, creating, editing
+    and deleting nodes as well as provides update mechanism for classes that require up to date
+    node configuration.
+    """
     def __init__(self):
         Observable.__init__(self)
         super(NodeSocket,self).__init__()
@@ -24,7 +36,8 @@ class NodeSocket(SocketResource, Observable):
     def add(self, node):
         with MongoConnector(constants.DB_CONFIG) as db:
             if db.nodes.find_one({'name': node['name']}):
-                return {'success': False, 'message': 'The node with name "' + node['name'] + '" already exists.'}
+                return {'success': False, 'message': 'The node with name "' + node['name'] +
+                                                     '" already exists.'}
             else:
                 db.nodes.insert(node)
                 self.update()
@@ -60,19 +73,21 @@ def get_node(payload):
 @socket.on('add:node')
 def add_node(payload):
     if not payload:
-        return 'Empty payload detected, a node object is required for this operation.'
+        return {'success': False, 'message': 'Empty payload detected, a node object is '
+                                             'required for this operation.'}
     return node.add(payload)
 
 
 @socket.on('update:node')
 def update_node(payload):
     if not payload:
-        return 'Empty payload detected, a node object is required for this operation.'
+        return {'success': False, 'message': 'Empty payload detected, a node object is required '
+                                             'for this operation.'}
     return node.upsert(payload)
 
 
 @socket.on('delete:node')
 def delete_node(payload):
     if 'name' not in payload:
-        return 'Invalid payload, the required fields are: name.'
+        return {'success': False, 'message': 'Invalid payload, the required fields are: name.'}
     return node.delete(payload['name'])

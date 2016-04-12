@@ -1,3 +1,11 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file contains additional styles used by all components of the user interface,
+            as well as overrides for the bootsrtap components.
+*/
+
 /* Global Bootsrap Overrides */
 nav {
     margin-bottom: 0 !important;
@@ -37,7 +45,7 @@ div[class^="col"] { /* Reduce gutter between columns */
 .partition-bar {
     border-width: 0px 1px 0px 0px;
     border-style: solid;
-    border-color: light-grey;
+    border-color: #e2e2e2; /* light gray */
 }
 
 /* Label Styles */
@@ -84,4 +92,30 @@ div[class^="col"] { /* Reduce gutter between columns */
 /* Chart.js overrides */
 .line-legend {
     margin: -1em 0 0 0;
+}
+
+/* Spinner source: http://jsfiddle.net/chadkuehn/1twpzLz8/ */
+.glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }

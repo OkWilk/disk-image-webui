@@ -1,3 +1,12 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides encapsulation of the communication between Python server
+            and frontend using the Socket.IO channels. It is responsible for interacting
+            with the JobSocket, and provides data required by JobList and BackupList.
+*/
+
 AppModule.service("JobModel", ["socket", "toaster", function(socket, toaster) {
     var JobModel = {
         data: {},
@@ -42,10 +51,9 @@ AppModule.service("JobModel", ["socket", "toaster", function(socket, toaster) {
         socket.emit('post:job', payload, function(response) {
             if(!response.success) {
                 toaster.pop('error', '', response.message)
+                callback(false);
             } else {
-                if(callback) {
-                    callback();
-                }
+                callback(true);
             }
         })
     };

@@ -1,5 +1,11 @@
-AppModule.controller("NodesListCtrl", ['$scope', '$uibModal', 'MasterModel',
-    function($scope, $uibModal, MasterModel){
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
+AppModule.controller("NodesListCtrl", ['$scope', '$uibModal', 'MasterModel', '$confirm',
+    function($scope, $uibModal, MasterModel, $confirm){
 
     var init = function() {
         $scope.model = MasterModel;
@@ -8,7 +14,11 @@ AppModule.controller("NodesListCtrl", ['$scope', '$uibModal', 'MasterModel',
         $scope.model.nodes.get()
     };
     $scope.delete = function(node) {
-        $scope.model.nodes.delete(node.name)
+        $confirm({title: "Delete Node", text:"Are you sure you want to delete the node '" + node.name + "'?"}).then(
+            function() {
+                $scope.model.nodes.delete(node.name);
+            }
+        )
     };
     $scope.edit = function(node) {
         var uibModalInstance = $uibModal.open({

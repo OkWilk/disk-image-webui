@@ -1,5 +1,11 @@
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
+
 import requests
-from time import time
+
 import constants
 from api.nodeconfig import NodeConfig
 from .socketprovider import SocketProvider
@@ -9,6 +15,10 @@ socket = SocketProvider.get_socket()
 
 
 class MetricSocket(SocketResource):
+    """
+    The socket implementation for collection of metrics from imaging nodes.
+    """
+
     def __init__(self, interval):
         SocketResource.__init__(self, interval)
         self.metrics = {}
@@ -60,4 +70,4 @@ metric.start()
 @socket.on('get:metric')
 def get_metric(payload):
     socket.emit('get:metric', metric.metrics)
-    return "OK"
+    return {'success': True, 'message': 'OK'}

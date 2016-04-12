@@ -1,3 +1,6 @@
+"""
+This file is the entry point for the DiskImage-WebUI part of the project.
+"""
 import logging
 
 from flask import Flask, render_template
@@ -9,7 +12,7 @@ from api.nodeconfig import NodeConfig
 logging .basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s][%(levelname)s]: %(message)s', filename='server.log',
                      filemode='w')
 
-""" Suppress logging from external libraries """
+# Suppress logging from external libraries
 logging.getLogger('werkzeug').setLevel(logging.WARNING)  # Suppress default flask HTTP request logging
 logging.getLogger('socketio').setLevel(logging.WARNING)  # Suppress socket io event logging
 logging.getLogger('engineio').setLevel(logging.WARNING)  # Suppress socket io request logging
@@ -44,11 +47,6 @@ def backups():
 @app.route('/nodes')
 def nodes():
     return render_template('nodes.html')
-
-
-@app.route('/config')
-def config():
-    return render_template('config.html')
 
 
 if __name__ == '__main__':

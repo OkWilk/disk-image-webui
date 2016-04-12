@@ -1,3 +1,13 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides encapsulation of the communication between Python server
+            and frontend using the Socket.IO channels. It is responsible for interacting
+            with the DiskSocket, and provides data required by DiskList and backup restoration
+            modal.
+*/
+
 AppModule.service("DiskModel", ["socket", function(socket) {
     var DiskModel = {
         data: null,

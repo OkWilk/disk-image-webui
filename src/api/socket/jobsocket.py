@@ -1,3 +1,9 @@
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
+
 import requests
 
 import constants
@@ -9,6 +15,9 @@ socket = SocketProvider.get_socket()
 
 
 class JobSocket(SocketResource):
+    """
+    The socket implementation for retrieving, starting and cancelling of jobs.
+    """
 
     def _broadcast_jobs(self):
         socket.emit('get:job', self.data, broadcast=True)
@@ -38,7 +47,6 @@ class JobSocket(SocketResource):
             r = requests.delete(NodeConfig.get_node_url(node_id) + constants.JOB_RESOURCE + '/' + job_id,
                                 timeout=constants.LONG_TIMEOUT)
             if r.status_code == 200:
-                self.update()
                 return {'success': True, 'message': 'OK'}
             else:
                 return {'success': False, 'message': str(r.text).strip().strip('"')}
@@ -65,13 +73,16 @@ job.start()
 def get_disk(payload):
     socket.emit('get:job', job.data)
     job.background_update()
-    return "OK"
+    return {'success': False, 'message': 'OK'}
 
 
 @socket.on('delete:job')
-def del_job(payload):
+def delete_job(payload):
     if 'node' in payload and 'job_id' in payload:
-        return job.delete(payload['node'], payload['job_id'])
+        result = job.delete(payload['node'], payload['job_id'])
+        if result['success']:
+            job.background_update()
+        return result
 
 
 @socket.on('post:job')
@@ -79,6 +90,10 @@ def post_job(payload):
     try:
         node = NodeConfig.get_node(payload['node'])
         payload.pop('node')
-        return job.create(node, payload)
+        result = job.create(node, payload)
+        if result['success']:
+            job.background_update()
+        return result
     except KeyError as e:
-        return "Invalid payload format, the required 'node' parameter was not provided.", 400
+        return {'success': False, 'message': "Invalid payload format, the required 'node' "
+                                             "parameter was not provided."}

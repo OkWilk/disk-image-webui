@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "NodeModel", "toaster",
     function($scope, $uibModalInstance, node, NodeModel, toaster) {
     var init_modal = function() {
@@ -5,6 +11,7 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "N
             $scope.title = "Edit node";
             $scope.node = node;
             $scope.showErrors = false;
+            $scope.validating = false;
             $scope.edit = true;
         } else {
             $scope.title = "Add node";
@@ -26,11 +33,7 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "N
     };
     $scope.canAddDiskToIgnoreList = function() {
         var index = $scope.node.ignored_disks.indexOf($scope.ignored);
-        if(index < 0 && $scope.ignored) {
-            return true;
-        } else {
-            return false;
-        }
+        return index < 0 && $scope.ignored;
     };
     $scope.addIgnoredDisk = function() {
         if($scope.canAddDiskToIgnoreList()) {
@@ -40,6 +43,7 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "N
     };
     $scope.ok = function(valid) {
         if(valid) {
+            $scope.validating = true;
             if ($scope.edit) {
                 updateNode($scope.node);
             } else {
@@ -54,13 +58,16 @@ AppModule.controller("NodeModalCtrl", ["$scope", "$uibModalInstance", "node", "N
         $uibModalInstance.dismiss();
     };
     var updateNode = function(node) {
-        NodeModel.update(node, closeModal());
+        NodeModel.update(node, callback);
     };
     var createNode = function(node) {
-        NodeModel.add(node, closeModal);
+        NodeModel.add(node, callback);
     };
-    var closeModal = function() {
-        $uibModalInstance.close();
+    var callback = function(success) {
+        if(success) {
+            $uibModalInstance.close();
+        }
+        $scope.validating = false;
     };
 
     init_modal();

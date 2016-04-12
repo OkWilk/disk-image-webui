@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("BackupListCtrl", ['$scope', 'MasterModel', 'BackupModel', 'SizeParser', '$filter',
     '$uibModal', '$confirm', 'toaster',
     function($scope, MasterModel, BackupModel, SizeParser, $filter, $uibModal, $confirm, toaster) {
@@ -66,10 +72,8 @@ AppModule.controller("BackupListCtrl", ['$scope', 'MasterModel', 'BackupModel', 
                 }
             });
             uibModalInstance.result.then(
-                function (result) {
-                    MasterModel.jobs.post(result);
-                },
                 function () {
+                    toaster.pop('success', '', 'The restoration job was successfully scheduled for "' + backup.id + '".')
                 }
             );
         } else {

@@ -1,9 +1,16 @@
+<!--
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file is responsible for displaying the job information. The middle part of the
+            dashboard.
+-->
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         Jobs
         <div class="pull-right">
             <button class="btn btn-default btn-xs" ng-click="update()" ng-disabled="model.jobs.status.loading">
-                <i ng-if="model.jobs.status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
+                <i ng-if="model.jobs.status.loading" class="glyphicon glyphicon-refresh glyphicon-spin"></i> Refresh</button>
         </div>
     </div>
     <div class="panel-body">

@@ -1,3 +1,12 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides encapsulation of the communication between Python server
+            and frontend using the Socket.IO channels. It is responsible for interacting
+            with the BackupSocket, and provides data required by BackupListController.
+*/
+
 AppModule.service("BackupModel", ["socket", function(socket) {
     var BackupModel = {
         backups: null,

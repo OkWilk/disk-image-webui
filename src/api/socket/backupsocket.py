@@ -1,16 +1,24 @@
-from datetime import datetime
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
 
+from flask.json import dumps
 from pymongo import DESCENDING
 
 import constants
 from lib.mdbconnector import MongoConnector, to_list
 from .socketprovider import SocketProvider
 from .socketresource import SocketResource
-from flask.json import dumps
+
 socket = SocketProvider.get_socket()
 
 
 class BackupSocket(SocketResource):
+    """
+    The socket implementation for retrieving, deleting and undeleting backups.
+    """
     def get(self, id=None, node=None, deleted=False, limit=10, offset=0):
         if id:
             return dumps(self._get_backup_details(id, limit, offset))
@@ -54,18 +62,18 @@ class BackupSocket(SocketResource):
                                       {'$set': {'deleted': True},
                                        '$currentDate': {'deletion_date': True}})
         if result['n']:
-            return 'OK', 200
+            return {'success': True, 'message': 'OK'}
         else:
-            return 'Requested backup does not exist.', 404
+            return {'success': False, 'message': 'Requested backup does not exist.'}
 
     def undelete(self, backup_id):
         with MongoConnector(constants.DB_CONFIG) as db:
             result = db.backup.update({'id': backup_id},
                                       {'$set': {'deleted': False, 'deletion_date': ''}})
         if result['n']:
-            return 'OK', 200
+            return {'success': True, 'message': 'OK'}
         else:
-            return 'Requested backup does not exist.', 404
+            return {'success': False, 'message': 'Requested backup does not exist.'}
 
 
 backup = BackupSocket()
@@ -87,11 +95,11 @@ def get_backup(payload):
 @socket.on('delete:backup')
 def delete_backup(payload):
     if 'id' not in payload:
-        return 'Invalid payload, the required fields are: id.'
+        return {'success': False, 'message': 'Invalid payload, the required fields are: id.'}
     return backup.delete(payload['id'])
 
 @socket.on('undelete:backup')
 def undelete_backup(payload):
     if 'id' not in payload:
-        return 'Invalid payload, the required fields are: id.'
+        return {'success': False, 'message': 'Invalid payload, the required fields are: id.'}
     return backup.undelete(payload['id'])

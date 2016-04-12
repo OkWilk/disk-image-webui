@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("JobDetailsModalCtrl", ['$scope', '$uibModalInstance', 'node', 'job', 'MasterModel',
     function($scope, $uibModalInstance, node, job, MasterModel) {
         var initModal = function() {

@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("DiskListCtrl", ['$scope', '$uibModal', 'SizeParser', 'MasterModel',
     'PartitionInfo', function($scope, $uibModal, SizeParser, MasterModel, PartitionInfo) {
 
@@ -22,12 +28,6 @@ AppModule.controller("DiskListCtrl", ['$scope', '$uibModal', 'SizeParser', 'Mast
                 }
             }
         });
-        uibModalInstance.result.then(
-            function(result) {
-                MasterModel.jobs.post(result)
-            },
-            function() { }
-        );
     };
     $scope.getSubjectivePercentage = SizeParser.getSubjectivePercentage;
     $scope.partitionInfo = PartitionInfo.getInfo;

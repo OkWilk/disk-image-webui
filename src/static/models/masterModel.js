@@ -1,3 +1,11 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file gathers the most important models which need to be accessible by most
+            controllers. The BackupModel is intentionally left out to avoid loading backup
+            history on pages which are not used anywhere else than in the BackupListController.
+*/
 AppModule.service("MasterModel", ["DiskModel", "JobModel", "MountModel", "MetricModel", "NodeModel",
     function(DiskModel, JobModel, MountModel, MetricModel, NodeModel) {
 

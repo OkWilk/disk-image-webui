@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("MountListCtrl", ['$scope', '$uibModal', 'MasterModel', function($scope, $uibModal, MasterModel) {
 
     var init = function() {

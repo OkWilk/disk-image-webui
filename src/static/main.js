@@ -1,3 +1,10 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file defines the basic structure for the Angular.JS app and enables rendering
+            of HTML tags in the popover components.
+*/
 var AppModule = angular.module("com.itcarlow.okwilk.diskimage", ['ui.bootstrap', 'chart.js', 'smart-table', 'toaster',
     'angular-confirm', 'ngMessages']);
 

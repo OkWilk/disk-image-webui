@@ -1,7 +1,17 @@
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
+
 from abc import ABCMeta, abstractmethod
 
 
 class Observable:
+    """
+    Class for implementation of the observer pattern.
+    """
+
     def __init__(self):
         self.observers = []
 

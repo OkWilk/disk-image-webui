@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides a number of utility functions shared across many controllers.
+*/
 AppModule.service('SizeParser', function() {
     this.parse = function(bytes) {
         var threshold = 1024;

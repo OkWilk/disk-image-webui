@@ -1,3 +1,7 @@
+"""
+This file defines constants used in other Python files.
+"""
+
 DB_CONFIG = {
     'host': 'localhost',
     'port': 27019,

@@ -1,9 +1,17 @@
+<!--
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides approximate presentation of the disk layout with additional information
+            regarding partition sizes. It is reused whenever disk information needs to be displayed
+            in the form of the progress bar.
+-->
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h4 class="inline-title">Disks</h4>
         <div class="pull-right">
             <button class="btn btn-default" ng-click="update()" ng-disabled="status.loading">
-                <i ng-if="status.loading" class="glyphicon glyphicon-refresh"></i> Refresh</button>
+                <i ng-if="status.loading" class="glyphicon glyphicon-refresh glyphicon-spin"></i> Refresh</button>
         </div>
     </div>
     <div class="panel-body">

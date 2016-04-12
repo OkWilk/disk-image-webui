@@ -1,3 +1,11 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides encapsulation of the communication between Python server
+            and frontend using the Socket.IO channels. It is responsible for interacting
+            with the NodeSocket, and provides data required by most of the controllers.
+*/
 AppModule.service("NodeModel", ["socket", "toaster", function(socket, toaster) {
     var NodeModel = {
         data: [],
@@ -28,17 +36,21 @@ AppModule.service("NodeModel", ["socket", "toaster", function(socket, toaster) {
     NodeModel.add = function(node, callback) {
         this.status.loading = true;
         socket.emit('add:node', node, function(result){
-            if(result.success) {
-                callback();
-            } else {
+            if(!result.success) {
                 toaster.pop('warning', '', result.message)
             }
+            callback(result.success);
         })
     };
 
-    NodeModel.update = function(node) {
+    NodeModel.update = function(node, callback) {
         this.status.loading = true;
-        socket.emit('update:node', node, function(){})
+        socket.emit('update:node', node, function(result){
+            if(!result.success) {
+                toaster.pop('warning', '', result.message)
+            }
+            callback(result.success);
+        })
     };
 
     NodeModel.delete = function(nodeName) {

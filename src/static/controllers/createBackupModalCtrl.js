@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("CreateBackupModalCtrl", ['$scope', '$uibModalInstance', 'node', 'disk', 'toaster', 'MasterModel',
 function($scope, $uibModalInstance, node, disk, toaster, MasterModel) {
     var initModal = function() {
@@ -5,6 +11,7 @@ function($scope, $uibModalInstance, node, disk, toaster, MasterModel) {
         $scope.showErrors = false;
         $scope.node = node;
         $scope.disk = disk;
+        $scope.validating = false;
         $scope.backup = {
             node: node,
             job_id: "",
@@ -24,14 +31,19 @@ function($scope, $uibModalInstance, node, disk, toaster, MasterModel) {
     };
     $scope.ok = function(valid) {
         if(valid) {
-            MasterModel.jobs.post($scope.backup, close);
+            $scope.validating = true;
+            MasterModel.jobs.post($scope.backup, callback);
         } else {
             $scope.showErrors = true;
             toaster.pop('warning','Invalid inputs detected','Fix all errors and try again.')
+
         }
     };
-    var close = function() {
-        $uibModalInstance.close();
+    var callback = function(close) {
+        if(close) {
+            $uibModalInstance.close();
+        }
+        $scope.validating = false;
     };
     initModal();
 }]);

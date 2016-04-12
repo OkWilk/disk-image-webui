@@ -1,3 +1,11 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+Purpose:    This file provides encapsulation of the communication between Python server
+            and frontend using the Socket.IO channels. It is responsible for interacting
+            with the MountSocket, and provides data required by BackupList and MountListController.
+*/
 AppModule.service("MountModel", ["socket", "toaster", function( socket, toaster) {
     var MountModel = {
         data: null,
@@ -31,12 +39,11 @@ AppModule.service("MountModel", ["socket", "toaster", function( socket, toaster)
             backup_id: backupId
         };
         socket.emit('delete:mount', payload, function(response) {
-            response = response.trim();
-            if(response === 'OK') {
+            if(response.success) {
                 toaster.pop('success', '', 'Backup "' + payload.backup_id + '" was successfully unmounted on ' +
                             payload.node_id);
             } else {
-                toaster.pop('error', '', response)
+                toaster.pop('error', '', response.message)
             }
         })
     };
@@ -47,12 +54,11 @@ AppModule.service("MountModel", ["socket", "toaster", function( socket, toaster)
             backup_id: backup.id
         };
         socket.emit('post:mount', payload, function(response) {
-            response = response.trim();
-            if(response === "OK") {
+            if(response.success) {
                 toaster.pop('success', '', 'Backup "' + payload.backup_id + '" was successfully mounted on ' +
                             payload.node_id);
             } else {
-                toaster.pop('error', '', response, 0);
+                toaster.pop('error', '', response.message, 0);
             }
         })
     };

@@ -1,3 +1,9 @@
+"""
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+"""
+
 import requests
 
 import constants
@@ -9,6 +15,9 @@ socket = SocketProvider.get_socket()
 
 
 class DiskSocket(SocketResource):
+    """
+    The socket implementation for retrieving disk information.
+    """
 
     def _broadcast_disks(self):
         socket.emit('get:disk', self.data, broadcast=True)
@@ -48,4 +57,4 @@ disk.start()
 def get_disk(payload):
     socket.emit('get:disk', disk.data)
     disk.background_update()
-    return "OK"
+    return {'success': True, 'message': 'OK'}

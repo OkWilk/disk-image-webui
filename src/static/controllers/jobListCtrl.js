@@ -1,3 +1,9 @@
+/*
+Author:     Oktawiusz Wilk
+Date:       10/04/2016
+License:    GPL
+*/
+
 AppModule.controller("JobListCtrl", ['$scope', '$uibModal', 'MasterModel', function($scope, $uibModal, MasterModel) {
 
         $scope.model = MasterModel;
