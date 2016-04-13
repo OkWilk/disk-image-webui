@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 """
 This file is the entry point for the DiskImage-WebUI part of the project.
 """
+
 import logging
 
 from flask import Flask, render_template
@@ -9,7 +12,7 @@ from flask_socketio import SocketIO
 
 from api.nodeconfig import NodeConfig
 
-logging .basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s][%(levelname)s]: %(message)s', filename='server.log',
+logging .basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s][%(levelname)s]: %(message)s', filename='/var/log/diskimage/webui.log',
                      filemode='w')
 
 # Suppress logging from external libraries
